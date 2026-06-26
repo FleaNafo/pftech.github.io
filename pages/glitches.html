@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Glitches - Phantom Forces Tech</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.10.0/tabler-icons.min.css" />
+  <link rel="stylesheet" href="../assets/shared.css" />
+</head>
+<body>
+
+<nav class="pf-nav">
+  <a href="../index.html" class="pf-logo">
+    <div class="pf-logo-icon"><i class="ti ti-bolt"></i></div>
+    Phantom Forces Tech
+  </a>
+  <div class="pf-nav-links">
+    <a class="nav-link" href="techs.html" data-page="techs">Techs</a>
+    <a class="nav-link active" href="glitches.html" data-page="glitches">Glitches</a>
+    <a class="nav-link" href="tutorials.html" data-page="tutorials">Tutorials</a>
+    <a class="nav-link" href="showcases.html" data-page="showcases">Showcases</a>
+    <a class="nav-link" href="submit.html" data-page="submit">Submit</a>
+  </div>
+  <div class="pf-nav-actions">
+    <a class="btn-submit" href="submit.html"><i class="ti ti-upload"></i> Submit</a>
+    <a class="btn-discord" href="https://discord.gg/G75a9aZKWp" target="_blank" rel="noopener"><i class="ti ti-brand-discord"></i> Discord</a>
+  </div>
+</nav>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-title"><i class="ti ti-alert-triangle"></i> Glitches</div>
+    <div style="font-size: 13px; color: var(--text-muted);">Total: <span id="count-glitch">—</span></div>
+  </div>
+  <div id="submissions-list" class="submissions-list"><div class="loading-state"><i class="ti ti-loader"></i> Loading...</div></div>
+</div>
+
+<div class="section">
+  <div class="discord-banner">
+    <div class="discord-text">
+      <h2>Found a glitch?</h2>
+      <p>Submit it for review and get featured in the community archive.</p>
+    </div>
+    <a class="btn-discord-big" href="submit.html"><i class="ti ti-upload"></i> Submit glitch</a>
+  </div>
+</div>
+
+<div class="footer">
+  © 2026 Phantom Forces Tech · Made by the community, for the community
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="../assets/shared.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    loadSubmissions('Glitch');
+    setActiveNav('glitches');
+  });
+</script>
+</body>
+</html>
