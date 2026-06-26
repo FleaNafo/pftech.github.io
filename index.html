@@ -8,8 +8,10 @@
 
     <title>Phantom Forces Atlas</title>
 
+    <!-- CSS -->
     <link rel="stylesheet" href="css/style.css">
 
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
@@ -19,119 +21,193 @@
 
 <body>
 
-<div id="background"></div>
-<div id="overlay"></div>
+    <!-- ========================= -->
+    <!-- Background -->
+    <!-- ========================= -->
 
-<header>
+    <div id="background"></div>
+    <div id="backgroundOverlay"></div>
+    <div id="particles"></div>
 
-    <div class="logo">
+    <!-- ========================= -->
+    <!-- Navigation -->
+    <!-- ========================= -->
 
-        <div class="diamond"></div>
+    <header>
 
-        <div>
+        <div class="logo">
 
-            <h2>PHANTOM</h2>
-            <span>FORCES ATLAS</span>
+            <div class="logoDiamond"></div>
 
-        </div>
+            <div class="logoText">
 
-    </div>
-
-    <nav>
-
-        <a class="active" href="#">HOME</a>
-        <a href="#">MAPS</a>
-        <a href="#">SEARCH</a>
-        <a href="#">ABOUT</a>
-
-    </nav>
-
-</header>
-
-<main>
-
-    <section class="hero">
-
-        <p class="subtitle">
-            INTERACTIVE GLITCH DATABASE
-        </p>
-
-        <h1>
-
-            DISCOVER EVERY
-
-            <span>HIDDEN CORNER</span>
-
-        </h1>
-
-        <p class="description">
-
-            Browse every Phantom Forces map, discover out-of-bounds glitches,
-            wall clips, launch spots and hidden areas through an interactive atlas.
-
-        </p>
-
-        <div class="stats">
-
-            <div class="card">
-
-                <h3>48</h3>
-
-                <p>MAPS</p>
-
-            </div>
-
-            <div class="card">
-
-                <h3>327</h3>
-
-                <p>GLITCHES</p>
-
-            </div>
-
-            <div class="card">
-
-                <h3>291</h3>
-
-                <p>WORKING</p>
-
-            </div>
-
-            <div class="card">
-
-                <h3>36</h3>
-
-                <p>PATCHED</p>
+                <h2>PHANTOM</h2>
+                <span>FORCES ATLAS</span>
 
             </div>
 
         </div>
 
-        <button id="browse">
+        <nav>
 
-            Browse Maps
+            <a class="active" href="#">HOME</a>
+            <a href="maps.html">MAPS</a>
+            <a href="#">SEARCH</a>
+            <a href="#">SUBMIT</a>
 
-        </button>
+        </nav>
+
+    </header>
+
+    <!-- ========================= -->
+    <!-- Hero -->
+    <!-- ========================= -->
+
+    <main>
+
+        <section class="hero">
+
+            <p class="subtitle">
+
+                INTERACTIVE GLITCH DATABASE
+
+            </p>
+
+            <h1>
+
+                DISCOVER
+
+                <span>EVERY HIDDEN CORNER</span>
+
+            </h1>
+
+            <p class="description">
+
+                Browse every Phantom Forces map and discover wall clips,
+                launch spots, out-of-bounds glitches, and hidden locations
+                through an interactive tactical atlas.
+
+            </p>
+
+            <!-- Buttons -->
+
+            <div class="heroButtons">
+
+                <button id="atlasButton">
+
+                    ENTER ATLAS
+
+                </button>
+
+                <button id="latestButton">
+
+                    LATEST FINDINGS
+
+                </button>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- ========================= -->
+    <!-- Stats -->
+    <!-- ========================= -->
+
+    <section class="statsSection">
+
+        <div class="statCard">
+
+            <h3 id="mapsCount">0</h3>
+
+            <p>MAPS</p>
+
+        </div>
+
+        <div class="statCard">
+
+            <h3 id="glitchCount">0</h3>
+
+            <p>GLITCHES</p>
+
+        </div>
+
+        <div class="statCard">
+
+            <h3 id="workingCount">0</h3>
+
+            <p>WORKING</p>
+
+        </div>
+
+        <div class="statCard">
+
+            <h3 id="patchedCount">0</h3>
+
+            <p>PATCHED</p>
+
+        </div>
 
     </section>
 
-</main>
+    <!-- ========================= -->
+    <!-- Recent Discoveries -->
+    <!-- ========================= -->
 
-<footer>
+    <section class="discoveries">
 
-    <div>
+        <div class="sectionHeader">
 
-        COMMUNITY PROJECT
+            <h2>RECENT DISCOVERIES</h2>
 
-    </div>
+            <p>
 
-    <div>
+                Latest glitches submitted by the community.
 
-        BUILT FOR GLITCH HUNTERS
+            </p>
 
-    </div>
+        </div>
 
-</footer>
+        <div id="recentContainer">
+
+            <!-- JS inserts cards here -->
+
+        </div>
+
+    </section>
+
+    <!-- ========================= -->
+    <!-- Footer -->
+    <!-- ========================= -->
+
+    <footer>
+
+        <div>
+
+            COMMUNITY DRIVEN
+
+        </div>
+
+        <div>
+
+            PHANTOM FORCES GLITCH DATABASE
+
+        </div>
+
+        <div>
+
+            © 2026
+
+        </div>
+
+    </footer>
+
+    <!-- ========================= -->
+    <!-- Javascript -->
+    <!-- ========================= -->
+
+    <script src="js/app.js"></script>
 
 </body>
 
