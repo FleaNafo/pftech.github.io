@@ -107,7 +107,6 @@
     .hero {
       padding: 72px 24px 52px;
       text-align: center;
-      border-bottom: 0.5px solid var(--border);
       max-width: 700px; margin: 0 auto;
     }
     .hero-badge {
@@ -116,14 +115,9 @@
       background: var(--accent-bg); color: var(--accent-text);
       font-size: 12px; font-weight: 500; margin-bottom: 20px;
     }
-    .hero h1 {
-      font-size: 38px; font-weight: 500; letter-spacing: -0.5px; margin-bottom: 14px;
-    }
+    .hero h1 { font-size: 38px; font-weight: 500; letter-spacing: -0.5px; margin-bottom: 14px; }
     .hero h1 span { color: var(--accent); }
-    .hero p {
-      font-size: 16px; color: var(--text-secondary);
-      max-width: 460px; margin: 0 auto 32px; line-height: 1.65;
-    }
+    .hero p { font-size: 16px; color: var(--text-secondary); max-width: 460px; margin: 0 auto 32px; line-height: 1.65; }
     .hero-stats {
       display: flex; justify-content: center; gap: 40px; flex-wrap: wrap;
       padding-top: 28px; border-top: 0.5px solid var(--border);
@@ -136,7 +130,6 @@
     .section { padding: 44px 24px; border-bottom: 0.5px solid var(--border); max-width: 960px; margin: 0 auto; }
     .section-full { padding: 44px 24px; border-bottom: 0.5px solid var(--border); background: var(--surface-0); }
     .section-inner { max-width: 960px; margin: 0 auto; }
-
     .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
     .section-title { display: flex; align-items: center; gap: 8px; font-size: 16px; font-weight: 500; }
     .section-title i { color: var(--accent); font-size: 18px; }
@@ -158,11 +151,26 @@
     .tag-tech { background: var(--accent-bg); color: var(--accent-text); }
     .tag-glitch { background: var(--warning-bg); color: var(--warning-text); }
     .tag-tutorial { background: var(--success-bg); color: var(--success-text); }
+    .tag-video { background: #f3e8ff; color: #5b21b6; }
     .card h3 { font-size: 14px; font-weight: 500; margin-bottom: 6px; }
     .card p { font-size: 13px; color: var(--text-secondary); line-height: 1.5; }
     .card-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 12px; }
     .card-meta { font-size: 12px; color: var(--text-muted); }
     .card-views { display: flex; align-items: center; gap: 4px; font-size: 12px; color: var(--text-muted); }
+
+    /* DYNAMIC SUBMISSIONS LIST */
+    .submissions-list { display: flex; flex-direction: column; gap: 10px; margin-top: 16px; }
+    .sub-card {
+      background: var(--surface-2); border: 0.5px solid var(--border);
+      border-radius: 10px; padding: 14px 16px;
+      display: flex; align-items: flex-start; gap: 12px;
+    }
+    .sub-card-body { flex: 1; }
+    .sub-card-body h4 { font-size: 14px; font-weight: 500; margin-bottom: 3px; }
+    .sub-card-body p { font-size: 13px; color: var(--text-secondary); line-height: 1.5; }
+    .sub-card-meta { font-size: 11px; color: var(--text-muted); margin-top: 6px; }
+    .sub-card-video { font-size: 12px; color: var(--accent); margin-top: 4px; }
+    .empty-state { text-align: center; padding: 32px; color: var(--text-muted); font-size: 14px; }
 
     /* VIDEOS */
     .video-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
@@ -218,9 +226,9 @@
       transition: opacity 0.15s;
     }
     .btn-primary:hover { opacity: 0.88; }
+    .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
 
     /* DISCORD BANNER */
-    .discord-wrap { max-width: 960px; margin: 0 auto; }
     .discord-banner {
       background: var(--surface-2); border: 0.5px solid var(--border);
       border-radius: 12px; padding: 28px 32px;
@@ -254,6 +262,8 @@
     }
     .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
 
+    .hero-divider { border-bottom: 0.5px solid var(--border); }
+
     @media (max-width: 640px) {
       .pf-nav-links { display: none; }
       .hero h1 { font-size: 28px; }
@@ -280,21 +290,21 @@
   </div>
   <div class="pf-nav-actions">
     <a class="btn-submit" href="#submit"><i class="ti ti-upload"></i> Submit</a>
-    <a class="btn-discord" href="#discord"><i class="ti ti-brand-discord"></i> Discord</a>
+    <a class="btn-discord" href="https://discord.gg/G75a9aZKWp" target="_blank" rel="noopener"><i class="ti ti-brand-discord"></i> Discord</a>
   </div>
 </nav>
 
 <!-- HERO -->
-<div style="border-bottom: 0.5px solid var(--border);">
+<div class="hero-divider">
   <div class="hero">
     <div class="hero-badge"><i class="ti ti-bolt"></i> Community resource</div>
     <h1>Phantom Forces <span>Tech & Glitches</span></h1>
     <p>Your go-to community archive for techs, glitches, tutorials, and video showcases — all in one place.</p>
     <div class="hero-stats">
-      <div class="stat"><div class="stat-num">142</div><div class="stat-label">Techs documented</div></div>
-      <div class="stat"><div class="stat-num">89</div><div class="stat-label">Glitches archived</div></div>
-      <div class="stat"><div class="stat-num">34</div><div class="stat-label">Video showcases</div></div>
-      <div class="stat"><div class="stat-num">2.1k</div><div class="stat-label">Community members</div></div>
+      <div class="stat"><div class="stat-num" id="count-techs">0</div><div class="stat-label">Techs documented</div></div>
+      <div class="stat"><div class="stat-num" id="count-glitches">0</div><div class="stat-label">Glitches archived</div></div>
+      <div class="stat"><div class="stat-num" id="count-tutorials">0</div><div class="stat-label">Tutorials</div></div>
+      <div class="stat"><div class="stat-num" id="count-videos">0</div><div class="stat-label">Video showcases</div></div>
     </div>
   </div>
 </div>
@@ -303,36 +313,9 @@
 <div id="techs" class="section">
   <div class="section-header">
     <div class="section-title"><i class="ti ti-bolt"></i> Techs</div>
-    <span class="see-all">See all →</span>
   </div>
-  <div class="cards-grid">
-    <div class="card">
-      <div class="card-tag tag-tech"><i class="ti ti-bolt" style="font-size:11px"></i> Tech</div>
-      <h3>Bunny hop momentum cancel</h3>
-      <p>Instantly cancel all momentum mid-air by strafing at the peak of your jump.</p>
-      <div class="card-footer">
-        <span class="card-meta">Updated 2d ago</span>
-        <div class="card-views"><i class="ti ti-eye"></i> 1.4k</div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-tag tag-tech"><i class="ti ti-bolt" style="font-size:11px"></i> Tech</div>
-      <h3>Slide-to-sprint cancel</h3>
-      <p>Bypass the slide recovery animation to regain full sprint speed in under 3 frames.</p>
-      <div class="card-footer">
-        <span class="card-meta">Updated 5d ago</span>
-        <div class="card-views"><i class="ti ti-eye"></i> 987</div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-tag tag-tech"><i class="ti ti-bolt" style="font-size:11px"></i> Tech</div>
-      <h3>Quickscope timing window</h3>
-      <p>Precise scope-in frame data for consistent quickscope hits across all sniper classes.</p>
-      <div class="card-footer">
-        <span class="card-meta">Updated 1w ago</span>
-        <div class="card-views"><i class="ti ti-eye"></i> 2.1k</div>
-      </div>
-    </div>
+  <div id="list-tech" class="submissions-list">
+    <div class="empty-state">No techs submitted yet — be the first!</div>
   </div>
 </div>
 
@@ -340,36 +323,9 @@
 <div id="glitches" class="section">
   <div class="section-header">
     <div class="section-title"><i class="ti ti-alert-triangle"></i> Glitches</div>
-    <span class="see-all">See all →</span>
   </div>
-  <div class="cards-grid">
-    <div class="card">
-      <div class="card-tag tag-glitch"><i class="ti ti-alert-triangle" style="font-size:11px"></i> Glitch</div>
-      <h3>Out-of-bounds on Desert Storm</h3>
-      <p>Clip through the south wall near the crane to access the OOB area on Desert Storm.</p>
-      <div class="card-footer">
-        <span class="card-meta">Found 3d ago</span>
-        <div class="card-views"><i class="ti ti-eye"></i> 3.2k</div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-tag tag-glitch"><i class="ti ti-alert-triangle" style="font-size:11px"></i> Glitch</div>
-      <h3>Invisible player model</h3>
-      <p>Character model disappears to enemies during specific respawn angles on Ravod.</p>
-      <div class="card-footer">
-        <span class="card-meta">Found 1w ago</span>
-        <div class="card-views"><i class="ti ti-eye"></i> 1.8k</div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-tag tag-glitch"><i class="ti ti-alert-triangle" style="font-size:11px"></i> Glitch</div>
-      <h3>Infinite ammo reload loop</h3>
-      <p>Trigger a reload-cancel loop that refills mag without consuming reserve ammo.</p>
-      <div class="card-footer">
-        <span class="card-meta">Found 2w ago</span>
-        <div class="card-views"><i class="ti ti-eye"></i> 4.5k</div>
-      </div>
-    </div>
+  <div id="list-glitch" class="submissions-list">
+    <div class="empty-state">No glitches documented yet.</div>
   </div>
 </div>
 
@@ -377,36 +333,9 @@
 <div id="tutorials" class="section">
   <div class="section-header">
     <div class="section-title"><i class="ti ti-book"></i> Tutorials</div>
-    <span class="see-all">See all →</span>
   </div>
-  <div class="cards-grid">
-    <div class="card">
-      <div class="card-tag tag-tutorial"><i class="ti ti-book" style="font-size:11px"></i> Tutorial</div>
-      <h3>Movement tech for beginners</h3>
-      <p>A step-by-step breakdown of core movement mechanics every new player should know.</p>
-      <div class="card-footer">
-        <span class="card-meta">By PhantomVet</span>
-        <div class="card-views"><i class="ti ti-eye"></i> 5.6k</div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-tag tag-tutorial"><i class="ti ti-book" style="font-size:11px"></i> Tutorial</div>
-      <h3>Advanced aim training routine</h3>
-      <p>Community-tested aim drills to improve tracking and flick accuracy.</p>
-      <div class="card-footer">
-        <span class="card-meta">By AimGod99</span>
-        <div class="card-views"><i class="ti ti-eye"></i> 3.9k</div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-tag tag-tutorial"><i class="ti ti-book" style="font-size:11px"></i> Tutorial</div>
-      <h3>Gun builds for ranked</h3>
-      <p>Optimal attachment configs for the meta weapons used in competitive ranked matches.</p>
-      <div class="card-footer">
-        <span class="card-meta">By RankedPro</span>
-        <div class="card-views"><i class="ti ti-eye"></i> 7.1k</div>
-      </div>
-    </div>
+  <div id="list-tutorial" class="submissions-list">
+    <div class="empty-state">No tutorials yet.</div>
   </div>
 </div>
 
@@ -414,42 +343,9 @@
 <div id="videos" class="section">
   <div class="section-header">
     <div class="section-title"><i class="ti ti-player-play"></i> Video showcases</div>
-    <span class="see-all">See all →</span>
   </div>
-  <div class="video-grid">
-    <div class="video-card">
-      <div class="video-thumb">
-        <i class="ti ti-video bg-icon"></i>
-        <div class="play-btn"><i class="ti ti-player-play"></i></div>
-        <div class="video-label">TECH</div>
-      </div>
-      <div class="video-info">
-        <h3>Fastest bhop route — Metro</h3>
-        <p>2:14 · 8.3k views</p>
-      </div>
-    </div>
-    <div class="video-card">
-      <div class="video-thumb">
-        <i class="ti ti-video bg-icon"></i>
-        <div class="play-btn"><i class="ti ti-player-play"></i></div>
-        <div class="video-label">GLITCH</div>
-      </div>
-      <div class="video-info">
-        <h3>OOB wall clip compilation</h3>
-        <p>4:51 · 12.1k views</p>
-      </div>
-    </div>
-    <div class="video-card">
-      <div class="video-thumb">
-        <i class="ti ti-video bg-icon"></i>
-        <div class="play-btn"><i class="ti ti-player-play"></i></div>
-        <div class="video-label">TUTORIAL</div>
-      </div>
-      <div class="video-info">
-        <h3>Slide cancel in depth</h3>
-        <p>6:22 · 5.7k views</p>
-      </div>
-    </div>
+  <div id="list-video" class="submissions-list">
+    <div class="empty-state">No video showcases yet.</div>
   </div>
 </div>
 
@@ -458,7 +354,11 @@
   <div class="section-inner">
     <div class="submit-card">
       <h2>Submit a tech or glitch</h2>
-      <p>Found something new? Share it with the community.</p>
+      <p>Found something new? Share it with the community and it'll show up on the site instantly.</p>
+      <div class="form-group">
+        <label class="form-label" for="s-name">Your name / username</label>
+        <input class="form-input" id="s-name" type="text" placeholder="e.g. PhantomVet" />
+      </div>
       <div class="form-group">
         <label class="form-label" for="s-title">Title</label>
         <input class="form-input" id="s-title" type="text" placeholder="e.g. Slide cancel on Ravod 911" />
@@ -467,10 +367,10 @@
         <div class="form-group">
           <label class="form-label" for="s-type">Type</label>
           <select class="form-select" id="s-type">
-            <option>Tech</option>
-            <option>Glitch</option>
-            <option>Tutorial</option>
-            <option>Video showcase</option>
+            <option value="Tech">Tech</option>
+            <option value="Glitch">Glitch</option>
+            <option value="Tutorial">Tutorial</option>
+            <option value="Video showcase">Video showcase</option>
           </select>
         </div>
         <div class="form-group">
@@ -486,7 +386,7 @@
         <label class="form-label" for="s-video">Video link (optional)</label>
         <input class="form-input" id="s-video" type="text" placeholder="YouTube or Roblox clip URL" />
       </div>
-      <button class="btn-primary" onclick="handleSubmit()">Submit for review</button>
+      <button class="btn-primary" id="submit-btn" onclick="handleSubmit()">Submit for review</button>
     </div>
   </div>
 </div>
@@ -498,7 +398,7 @@
       <h2>Join the community on Discord</h2>
       <p>Get the latest techs first, chat with other players, and report new glitches live.</p>
     </div>
-    <a class="btn-discord-big" href="#"><i class="ti ti-brand-discord"></i> Join the server</a>
+    <a class="btn-discord-big" href="https://discord.gg/G75a9aZKWp" target="_blank" rel="noopener"><i class="ti ti-brand-discord"></i> Join the server</a>
   </div>
 </div>
 
@@ -507,26 +407,163 @@
   © 2026 Phantom Forces Tech · Made by the community, for the community
 </div>
 
-<!-- TOAST -->
 <div class="toast" id="toast"></div>
 
 <script>
+  const WEBHOOK = 'https://discord.com/api/webhooks/1519986780177305611/LcIjXkgLnvSYeFPzx1kLM6edgCPaeR-qjdeT5xkLRUSK1RAgJxDlCFHd8UXLjNIWVvbW';
+  const STORAGE_KEY = 'pf_submissions';
+
   function showToast(msg) {
     const t = document.getElementById('toast');
     t.textContent = msg;
     t.classList.add('show');
-    setTimeout(() => t.classList.remove('show'), 3000);
+    setTimeout(() => t.classList.remove('show'), 3500);
   }
 
-  function handleSubmit() {
+  function getSubmissions() {
+    try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); } catch { return []; }
+  }
+
+  function saveSubmissions(subs) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(subs));
+  }
+
+  function formatDate(iso) {
+    const d = new Date(iso);
+    return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+  }
+
+  function tagClass(type) {
+    const map = { 'Tech': 'tag-tech', 'Glitch': 'tag-glitch', 'Tutorial': 'tag-tutorial', 'Video showcase': 'tag-video' };
+    return map[type] || 'tag-tech';
+  }
+
+  function tagIcon(type) {
+    const map = { 'Tech': 'ti-bolt', 'Glitch': 'ti-alert-triangle', 'Tutorial': 'ti-book', 'Video showcase': 'ti-player-play' };
+    return map[type] || 'ti-bolt';
+  }
+
+  function listId(type) {
+    const map = { 'Tech': 'list-tech', 'Glitch': 'list-glitch', 'Tutorial': 'list-tutorial', 'Video showcase': 'list-video' };
+    return map[type] || 'list-tech';
+  }
+
+  function counterId(type) {
+    const map = { 'Tech': 'count-techs', 'Glitch': 'count-glitches', 'Tutorial': 'count-tutorials', 'Video showcase': 'count-videos' };
+    return map[type] || 'count-techs';
+  }
+
+  function renderSubmissions() {
+    const subs = getSubmissions();
+    const types = ['Tech', 'Glitch', 'Tutorial', 'Video showcase'];
+    const counts = { 'Tech': 0, 'Glitch': 0, 'Tutorial': 0, 'Video showcase': 0 };
+
+    types.forEach(type => {
+      const el = document.getElementById(listId(type));
+      const typeSubs = subs.filter(s => s.type === type).reverse();
+      counts[type] = typeSubs.length;
+
+      if (typeSubs.length === 0) {
+        const emptyMsgs = {
+          'Tech': 'No techs submitted yet — be the first!',
+          'Glitch': 'No glitches documented yet.',
+          'Tutorial': 'No tutorials yet.',
+          'Video showcase': 'No video showcases yet.'
+        };
+        el.innerHTML = `<div class="empty-state">${emptyMsgs[type]}</div>`;
+      } else {
+        el.innerHTML = typeSubs.map(s => `
+          <div class="sub-card">
+            <div>
+              <span class="card-tag ${tagClass(s.type)}" style="margin-bottom:0">
+                <i class="ti ${tagIcon(s.type)}" style="font-size:11px"></i> ${s.type}
+              </span>
+            </div>
+            <div class="sub-card-body">
+              <h4>${escHtml(s.title)}${s.map ? ` <span style="font-weight:400;color:var(--text-muted)">· ${escHtml(s.map)}</span>` : ''}</h4>
+              ${s.desc ? `<p>${escHtml(s.desc)}</p>` : ''}
+              ${s.video ? `<div class="sub-card-video"><a href="${escHtml(s.video)}" target="_blank" rel="noopener"><i class="ti ti-external-link" style="font-size:12px"></i> Watch video</a></div>` : ''}
+              <div class="sub-card-meta">By ${escHtml(s.name || 'Anonymous')} · ${formatDate(s.date)}</div>
+            </div>
+          </div>
+        `).join('');
+      }
+    });
+
+    // Update counters
+    types.forEach(type => {
+      const el = document.getElementById(counterId(type));
+      if (el) el.textContent = counts[type];
+    });
+  }
+
+  function escHtml(str) {
+    return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  async function handleSubmit() {
+    const name  = document.getElementById('s-name').value.trim();
     const title = document.getElementById('s-title').value.trim();
-    if (!title) { showToast('Please add a title first.'); return; }
-    showToast('Submitted! Thanks for contributing.');
+    const type  = document.getElementById('s-type').value;
+    const map   = document.getElementById('s-map').value.trim();
+    const desc  = document.getElementById('s-desc').value.trim();
+    const video = document.getElementById('s-video').value.trim();
+
+    if (!title) { showToast('Please add a title.'); return; }
+    if (!desc)  { showToast('Please add a description.'); return; }
+
+    const btn = document.getElementById('submit-btn');
+    btn.disabled = true;
+    btn.textContent = 'Submitting...';
+
+    // Save locally immediately
+    const entry = { name: name || 'Anonymous', title, type, map, desc, video, date: new Date().toISOString() };
+    const subs = getSubmissions();
+    subs.push(entry);
+    saveSubmissions(subs);
+    renderSubmissions();
+
+    // Send to Discord webhook
+    const fields = [
+      { name: 'Type', value: type, inline: true },
+      { name: 'Submitted by', value: name || 'Anonymous', inline: true },
+    ];
+    if (map)   fields.push({ name: 'Map', value: map, inline: true });
+    if (desc)  fields.push({ name: 'Description', value: desc });
+    if (video) fields.push({ name: 'Video', value: video });
+
+    try {
+      await fetch(WEBHOOK, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          embeds: [{
+            title: `📥 New ${type}: ${title}`,
+            color: type === 'Tech' ? 0x185fa5 : type === 'Glitch' ? 0xba7517 : type === 'Tutorial' ? 0x3b6d11 : 0x7c3aed,
+            fields,
+            timestamp: new Date().toISOString(),
+            footer: { text: 'Phantom Forces Tech · pftech.github.io' }
+          }]
+        })
+      });
+    } catch (e) {
+      // Submission is saved locally even if Discord fails
+    }
+
+    btn.disabled = false;
+    btn.textContent = 'Submit for review';
+    showToast('Submitted! Thanks for contributing. ✓');
+
+    // Clear form
+    document.getElementById('s-name').value = '';
     document.getElementById('s-title').value = '';
+    document.getElementById('s-map').value = '';
     document.getElementById('s-desc').value = '';
     document.getElementById('s-video').value = '';
-    document.getElementById('s-map').value = '';
   }
+
+  // Init
+  renderSubmissions();
 </script>
 
 </body>
