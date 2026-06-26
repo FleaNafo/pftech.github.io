@@ -45,6 +45,43 @@ function showToast(msg) {
   setTimeout(() => t.classList.remove('show'), 3500);
 }
 
+function getEmbedUrl(videoUrl) {
+  if (!videoUrl) return null;
+  
+  // YouTube
+  const ytMatch = videoUrl.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+  if (ytMatch) return `https://www.youtube.com/embed/${ytMatch[1]}`;
+  
+  // Roblox clip (example: roblox.com/share?code=XXX)
+  const robloxMatch = videoUrl.match(/roblox\.com\/share\?code=([a-zA-Z0-9_-]+)/);
+  if (robloxMatch) return `https://www.roblox.com/share?code=${robloxMatch[1]}`;
+  
+  return null;
+}
+
+function openVideoModal(videoUrl, title) {
+  const embedUrl = getEmbedUrl(videoUrl);
+  if (!embedUrl) {
+    window.open(videoUrl, '_blank');
+    return;
+  }
+  
+  const modal = document.getElementById('video-modal');
+  if (!modal) return;
+  
+  document.getElementById('modal-title').textContent = title;
+  document.getElementById('video-embed').innerHTML = `<iframe src="${embedUrl}" allowfullscreen></iframe>`;
+  modal.classList.add('show');
+}
+
+function closeVideoModal() {
+  const modal = document.getElementById('video-modal');
+  if (modal) {
+    modal.classList.remove('show');
+    document.getElementById('video-embed').innerHTML = '';
+  }
+}
+
 function renderCard(s) {
   const type = s.type || 'Tech';
   return `
@@ -57,7 +94,7 @@ function renderCard(s) {
       <div class="sub-card-body">
         <h4>${esc(s.title)}${s.map ? ` <span style="font-weight:400;color:var(--text-muted)">· ${esc(s.map)}</span>` : ''}</h4>
         ${s.desc ? `<p>${esc(s.desc)}</p>` : ''}
-        ${s.video ? `<div class="sub-card-video"><a href="${esc(s.video)}" target="_blank" rel="noopener"><i class="ti ti-external-link" style="font-size:12px"></i> Watch video</a></div>` : ''}
+        ${s.video ? `<div class="sub-card-video" onclick="openVideoModal('${esc(s.video)}', '${esc(s.title)}')"><i class="ti ti-play" style="font-size:12px"></i> Watch video</div>` : ''}
         <div class="sub-card-meta">By ${esc(s.name || 'Anonymous')}${s.date ? ' · ' + formatDate(s.date) : ''}</div>
       </div>
     </div>`;
@@ -177,9 +214,21 @@ function setActiveNav(pageName) {
   if (activeLink) activeLink.classList.add('active');
 }
 
-// Load submissions on page load
-window.addEventListener('DOMContentLoaded', () => {
+// Modal event listeners
+document.addEventListener('DOMContentLoaded', () => {
   loadSubmissions();
+  
+  const modal = document.getElementById('video-modal');
+  if (modal) {
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeVideoModal();
+    });
+  }
+  
+  const closeBtn = document.getElementById('modal-close');
+  if (closeBtn) {
+    closeBtn.addEventListener('click', closeVideoModal);
+  }
 });
 
 // Refresh counters every 30 seconds
