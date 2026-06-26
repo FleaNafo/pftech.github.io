@@ -1,74 +1,138 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Phantom Forces Atlas</title>
 
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/style.css">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css2?family=Oxanium:wght@300;400;600;700;800&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+
 </head>
 
 <body>
 
-<div class="background"></div>
+<div id="background"></div>
+<div id="overlay"></div>
 
 <header>
+
     <div class="logo">
-        PHANTOM<br>
-        <span>FORCES ATLAS</span>
-    </div>
 
-    <nav>
-        <a href="#">Home</a>
-        <a href="#">Maps</a>
-        <a href="#">Search</a>
-        <a href="#">About</a>
-    </nav>
-</header>
+        <div class="diamond"></div>
 
-<section class="hero">
+        <div>
 
-    <div class="hero-content">
-
-        <p class="subtitle">
-            Interactive Glitch Database
-        </p>
-
-        <h1>
-            Discover Every<br>
-            Hidden Corner
-        </h1>
-
-        <p class="description">
-            Browse every Phantom Forces map, discover out-of-bounds glitches,
-            wall clips, launch spots and hidden areas through an interactive map.
-        </p>
-
-        <div class="buttons">
-
-            <button class="primary">
-                Browse Maps
-            </button>
-
-            <button class="secondary">
-                Latest Findings
-            </button>
+            <h2>PHANTOM</h2>
+            <span>FORCES ATLAS</span>
 
         </div>
 
     </div>
 
-</section>
+    <nav>
+
+        <a class="active" href="#">HOME</a>
+        <a href="#">MAPS</a>
+        <a href="#">SEARCH</a>
+        <a href="#">ABOUT</a>
+
+    </nav>
+
+</header>
+
+<main>
+
+    <section class="hero">
+
+        <p class="subtitle">
+            INTERACTIVE GLITCH DATABASE
+        </p>
+
+        <h1>
+
+            DISCOVER EVERY
+
+            <span>HIDDEN CORNER</span>
+
+        </h1>
+
+        <p class="description">
+
+            Browse every Phantom Forces map, discover out-of-bounds glitches,
+            wall clips, launch spots and hidden areas through an interactive atlas.
+
+        </p>
+
+        <div class="stats">
+
+            <div class="card">
+
+                <h3>48</h3>
+
+                <p>MAPS</p>
+
+            </div>
+
+            <div class="card">
+
+                <h3>327</h3>
+
+                <p>GLITCHES</p>
+
+            </div>
+
+            <div class="card">
+
+                <h3>291</h3>
+
+                <p>WORKING</p>
+
+            </div>
+
+            <div class="card">
+
+                <h3>36</h3>
+
+                <p>PATCHED</p>
+
+            </div>
+
+        </div>
+
+        <button id="browse">
+
+            Browse Maps
+
+        </button>
+
+    </section>
+
+</main>
 
 <footer>
 
-    Community Project • Built for Glitch Hunters
+    <div>
+
+        COMMUNITY PROJECT
+
+    </div>
+
+    <div>
+
+        BUILT FOR GLITCH HUNTERS
+
+    </div>
 
 </footer>
 
 </body>
+
 </html>
