@@ -1,0 +1,228 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+
+    font-family:Inter,sans-serif;
+
+    background:#06080c;
+    color:white;
+
+    overflow-x:hidden;
+}
+
+.background{
+
+    position:fixed;
+    inset:0;
+
+    background:
+    radial-gradient(circle at top,#0b6cff33 0%,transparent 40%),
+    linear-gradient(#06080c,#050505);
+
+    z-index:-2;
+}
+
+.background::after{
+
+    content:"";
+
+    position:absolute;
+    inset:0;
+
+    background-image:
+
+    linear-gradient(#ffffff08 1px,transparent 1px),
+
+    linear-gradient(90deg,#ffffff08 1px,transparent 1px);
+
+    background-size:60px 60px;
+
+    mask-image:linear-gradient(to bottom,black,transparent);
+
+}
+
+header{
+
+    width:100%;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:35px 80px;
+
+}
+
+.logo{
+
+    font-family:Orbitron;
+
+    font-size:28px;
+
+    font-weight:900;
+
+    line-height:1;
+
+}
+
+.logo span{
+
+    color:#45b5ff;
+
+    font-size:15px;
+
+    letter-spacing:4px;
+
+}
+
+nav{
+
+    display:flex;
+
+    gap:45px;
+
+}
+
+nav a{
+
+    color:#ddd;
+
+    text-decoration:none;
+
+    transition:.25s;
+
+}
+
+nav a:hover{
+
+    color:#4cc3ff;
+
+}
+
+.hero{
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    min-height:80vh;
+
+    text-align:center;
+
+}
+
+.subtitle{
+
+    color:#4ebeff;
+
+    letter-spacing:5px;
+
+    text-transform:uppercase;
+
+    margin-bottom:20px;
+
+}
+
+.hero h1{
+
+    font-family:Orbitron;
+
+    font-size:72px;
+
+    line-height:1.05;
+
+}
+
+.description{
+
+    width:700px;
+
+    max-width:90%;
+
+    margin:35px auto;
+
+    color:#a8a8a8;
+
+    font-size:20px;
+
+    line-height:1.8;
+
+}
+
+.buttons{
+
+    display:flex;
+
+    justify-content:center;
+
+    gap:20px;
+
+}
+
+button{
+
+    padding:18px 40px;
+
+    border-radius:14px;
+
+    font-size:16px;
+
+    cursor:pointer;
+
+    transition:.25s;
+
+}
+
+.primary{
+
+    background:#1998ff;
+
+    color:white;
+
+    border:none;
+
+    box-shadow:0 0 35px #1998ff66;
+
+}
+
+.primary:hover{
+
+    transform:translateY(-4px);
+
+    box-shadow:0 0 60px #1998ffaa;
+
+}
+
+.secondary{
+
+    background:transparent;
+
+    border:1px solid #4ebeff;
+
+    color:#4ebeff;
+
+}
+
+.secondary:hover{
+
+    background:#4ebeff22;
+
+}
+
+footer{
+
+    text-align:center;
+
+    color:#666;
+
+    padding:40px;
+
+}
