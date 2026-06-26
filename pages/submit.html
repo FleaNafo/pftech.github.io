@@ -3,132 +3,198 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Submit a Tech or Showcase</title>
-    <link rel="stylesheet" href="assets/style.css">
+    <title>Submit - Phantom Forces Tech</title>
+    <link rel="stylesheet" href="shared.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
 </head>
 <body>
-    <nav class="navbar">
-        <a href="index.html" class="logo">PF Tech Archive</a>
-        <div class="nav-links">
-            <a href="tech.html">Techs</a>
-            <a href="glitches.html">Glitches</a>
-            <a href="tutorials.html">Tutorials</a>
-            <a href="showcase.html">Showcases</a>
-            <a href="submit.html" class="active">Submit</a>
+    <nav class="pf-nav">
+        <div class="pf-logo" onclick="window.location.href='index.html'">
+            <div class="pf-logo-icon"><i class="ti ti-bolt"></i></div>
+            <span>Phantom Forces Tech</span>
+        </div>
+        <div class="pf-nav-links">
+            <a href="techs.html" class="nav-link">Techs</a>
+            <a href="glitches.html" class="nav-link">Glitches</a>
+            <a href="tutorials.html" class="nav-link">Tutorials</a>
+            <a href="showcases.html" class="nav-link">Showcases</a>
+            <a href="submit.html" class="nav-link active">Submit</a>
+        </div>
+        <div class="pf-nav-actions">
+            <button class="btn-submit" onclick="window.location.href='submit.html'">
+                <i class="ti ti-plus"></i> Submit
+            </button>
+            <button class="btn-discord" onclick="window.open('https://discord.gg/G75a9aZKWp', '_blank')">
+                <i class="ti ti-brand-discord"></i> Discord
+            </button>
         </div>
     </nav>
 
-    <main class="container">
-        <header class="page-header">
-            <h1><i class="ti ti-send"></i> Submit to the Archive</h1>
-            <p>Got a cool tech, glitch, or showcase? Submit it here for review!</p>
-        </header>
-
-        <div class="form-container">
-            <!-- NOTE: Update the 'action' URL to your actual Google Apps Script endpoint -->
-            <form id="submitForm" action="YOUR_GOOGLE_APPS_SCRIPT_URL_HERE" method="POST">
+    <main>
+        <section class="section">
+            <div class="submit-card">
+                <h2><i class="ti ti-send"></i> Submit to the Archive</h2>
+                <p>Got a cool tech, glitch, or showcase? Submit it here for review!</p>
                 
-                <div class="form-group">
-                    <label for="name">Your Name / Alias</label>
-                    <input type="text" id="name" name="name" placeholder="e.g. ShadowSniper" required>
-                </div>
+                <form id="submitForm">
+                    <div class="form-group">
+                        <label class="form-label" for="name">Your Name / Alias</label>
+                        <input type="text" id="name" name="name" class="form-input" placeholder="e.g. ShadowSniper" required>
+                    </div>
 
-                <div class="form-group">
-                    <label for="type">Submission Type</label>
-                    <select id="type" name="type" required>
-                        <option value="Tech">Tech</option>
-                        <option value="Glitch">Glitch</option>
-                        <option value="Tutorial">Tutorial</option>
-                        <option value="Showcase">Showcase</option>
-                    </select>
-                </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label" for="type">Submission Type</label>
+                            <select id="type" name="type" class="form-select" required>
+                                <option value="Tech">Tech</option>
+                                <option value="Glitch">Glitch</option>
+                                <option value="Tutorial">Tutorial</option>
+                                <option value="Showcase">Showcase</option>
+                            </select>
+                        </div>
 
-                <div class="form-group">
-                    <label for="title">Title</label>
-                    <input type="text" id="title" name="title" placeholder="e.g. Quickscope 360 No Scope" required>
-                </div>
+                        <div class="form-group">
+                            <label class="form-label" for="map">Map</label>
+                            <select id="map" name="map" class="form-select" required>
+                                <option value="" disabled selected>Select a map...</option>
+                                <option value="Bazaar">Bazaar</option>
+                                <option value="Black Site">Black Site</option>
+                                <option value="Capot">Capot</option>
+                                <option value="Castle Keep">Castle Keep</option>
+                                <option value="Containers">Containers</option>
+                                <option value="Crane Site">Crane Site</option>
+                                <option value="Derrick">Derrick</option>
+                                <option value="Desert Storm">Desert Storm</option>
+                                <option value="Dual Crane Site">Dual Crane Site</option>
+                                <option value="Dunes">Dunes</option>
+                                <option value="Dust Bowl">Dust Bowl</option>
+                                <option value="Elevation">Elevation</option>
+                                <option value="Facility">Facility</option>
+                                <option value="Favela">Favela</option>
+                                <option value="Fortress">Fortress</option>
+                                <option value="Foxholes">Foxholes</option>
+                                <option value="Heat">Heat</option>
+                                <option value="Height">Height</option>
+                                <option value="Highway Lot">Highway Lot</option>
+                                <option value="Marooned">Marooned</option>
+                                <option value="Metro Classic">Metro Classic</option>
+                                <option value="Metro ( 2025 )">Metro ( 2025 )</option>
+                                <option value="Mirage">Mirage</option>
+                                <option value="Paradise">Paradise</option>
+                                <option value="Penthouse">Penthouse</option>
+                                <option value="Ravod 911">Ravod 911</option>
+                                <option value="Rig">Rig</option>
+                                <option value="Ruins">Ruins</option>
+                                <option value="Rundown">Rundown</option>
+                                <option value="Second Storm">Second Storm</option>
+                                <option value="Stardom">Stardom</option>
+                                <option value="Suburbia">Suburbia</option>
+                                <option value="Transit">Transit</option>
+                                <option value="Trench">Trench</option>
+                                <option value="Villa">Villa</option>
+                                <option value="Warehouse">Warehouse</option>
+                            </select>
+                        </div>
+                    </div>
 
-                <!-- UPDATED: Exact PF Maps Dropdown -->
-                <div class="form-group">
-                    <label for="map">Map</label>
-                    <select id="map" name="map" required>
-                        <option value="" disabled selected>Select a map...</option>
-                        <option value="Bazaar">Bazaar</option>
-                        <option value="Black Site">Black Site</option>
-                        <option value="Capot">Capot</option>
-                        <option value="Castle Keep">Castle Keep</option>
-                        <option value="Containers">Containers</option>
-                        <option value="Crane Site">Crane Site</option>
-                        <option value="Derrick">Derrick</option>
-                        <option value="Desert Storm">Desert Storm</option>
-                        <option value="Dual Crane Site">Dual Crane Site</option>
-                        <option value="Dunes">Dunes</option>
-                        <option value="Dust Bowl">Dust Bowl</option>
-                        <option value="Elevation">Elevation</option>
-                        <option value="Facility">Facility</option>
-                        <option value="Favela">Favela</option>
-                        <option value="Fortress">Fortress</option>
-                        <option value="Foxholes">Foxholes</option>
-                        <option value="Heat">Heat</option>
-                        <option value="Height">Height</option>
-                        <option value="Highway Lot">Highway Lot</option>
-                        <option value="Marooned">Marooned</option>
-                        <option value="Metro Classic">Metro Classic</option>
-                        <option value="Metro ( 2025 )">Metro ( 2025 )</option>
-                        <option value="Mirage">Mirage</option>
-                        <option value="Paradise">Paradise</option>
-                        <option value="Penthouse">Penthouse</option>
-                        <option value="Ravod 911">Ravod 911</option>
-                        <option value="Rig">Rig</option>
-                        <option value="Ruins">Ruins</option>
-                        <option value="Rundown">Rundown</option>
-                        <option value="Second Storm">Second Storm</option>
-                        <option value="Stardom">Stardom</option>
-                        <option value="Suburbia">Suburbia</option>
-                        <option value="Transit">Transit</option>
-                        <option value="Trench">Trench</option>
-                        <option value="Villa">Villa</option>
-                        <option value="Warehouse">Warehouse</option>
-                    </select>
-                </div>
+                    <div class="form-group">
+                        <label class="form-label" for="title">Title</label>
+                        <input type="text" id="title" name="title" class="form-input" placeholder="e.g. Quickscope 360 No Scope" required>
+                    </div>
 
-                <div class="form-group">
-                    <label for="desc">Description</label>
-                    <textarea id="desc" name="desc" rows="4" placeholder="Explain how it works or what happens..."></textarea>
-                </div>
+                    <div class="form-group">
+                        <label class="form-label" for="desc">Description</label>
+                        <textarea id="desc" name="desc" class="form-textarea" placeholder="Explain how it works or what happens..."></textarea>
+                    </div>
 
-                <div class="form-group">
-                    <label for="video">Video Link (YouTube, etc.)</label>
-                    <input type="url" id="video" name="video" placeholder="https://youtube.com/..." required>
-                </div>
+                    <div class="form-group">
+                        <label class="form-label" for="video">Video Link (YouTube, etc.)</label>
+                        <input type="url" id="video" name="video" class="form-input" placeholder="https://youtube.com/..." required>
+                    </div>
 
-                <button type="submit" class="btn-submit">Submit for Review</button>
-            </form>
-            <p id="formMessage" class="form-message"></p>
-        </div>
+                    <button type="submit" class="btn-primary" id="submitBtn">
+                        <i class="ti ti-send"></i> Submit for Review
+                    </button>
+                </form>
+                <div id="formMessage" style="margin-top: 16px; text-align: center; font-size: 14px;"></div>
+            </div>
+        </section>
+
+        <section class="section-full">
+            <div class="section-inner">
+                <div class="discord-banner">
+                    <div class="discord-text">
+                        <h2><i class="ti ti-brand-discord"></i> Join our Discord</h2>
+                        <p>Connect with other players, share tips, and get help with your submissions.</p>
+                    </div>
+                    <button class="btn-discord-big" onclick="window.open('https://discord.gg/G75a9aZKWp', '_blank')">
+                        <i class="ti ti-brand-discord"></i> Join Server
+                    </button>
+                </div>
+            </div>
+        </section>
     </main>
 
+    <footer class="footer">
+        © 2026 Phantom Forces Tech · Made by the community, for the community
+    </footer>
+
+    <div id="toast" class="toast"></div>
+
     <script>
-        // Basic form submission handler
         document.getElementById('submitForm').addEventListener('submit', async function(e) {
             e.preventDefault();
+            
             const form = e.target;
-            const msg = document.getElementById('formMessage');
-            msg.textContent = "Submitting...";
-            msg.className = "form-message info";
-
+            const submitBtn = document.getElementById('submitBtn');
+            const formMessage = document.getElementById('formMessage');
+            const toast = document.getElementById('toast');
+            
+            // Disable button and show loading
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="ti ti-loader-2"></i> Submitting...';
+            formMessage.textContent = '';
+            
             try {
                 const formData = new FormData(form);
-                await fetch(form.action, { method: 'POST', body: formData, mode: 'no-cors' });
-                msg.textContent = "Success! Your submission is pending review.";
-                msg.className = "form-message success";
+                
+                // REPLACE THIS with your actual Google Apps Script Web App URL
+                const API_URL = 'https://script.google.com/macros/s/AKfycbyMKOcKID6Uc4_c9L_5oJdI472gJPc93lLNQQ9PlZsEcCpTvz7Tf6QgwHbV0IENFeL4/exec';
+                
+                await fetch(API_URL, { 
+                    method: 'POST', 
+                    body: formData,
+                    mode: 'no-cors'
+                });
+                
+                // Show success
+                formMessage.textContent = '✓ Submission successful! Your entry is pending review.';
+                formMessage.style.color = 'var(--success-text)';
                 form.reset();
-            } catch (err) {
-                msg.textContent = "Error submitting. Please try again.";
-                msg.className = "form-message error";
+                
+                showToast('Submission successful! Thank you for contributing.');
+                
+            } catch (error) {
+                console.error('Error:', error);
+                formMessage.textContent = '✗ Error submitting. Please try again.';
+                formMessage.style.color = 'var(--warning-text)';
+                showToast('Error submitting. Please try again.', 'error');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="ti ti-send"></i> Submit for Review';
             }
         });
+        
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.style.background = type === 'error' ? 'var(--warning-text)' : 'var(--text-primary)';
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
     </script>
 </body>
 </html>
