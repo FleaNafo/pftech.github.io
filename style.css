@@ -1,99 +1,160 @@
+/* ===========================================
+        PHANTOM FORCES ATLAS
+=========================================== */
+
 *{
     margin:0;
     padding:0;
     box-sizing:border-box;
 }
 
-body{
-
-    font-family:Inter,sans-serif;
-
-    background:#06080c;
-    color:white;
-
-    overflow-x:hidden;
+html{
+    scroll-behavior:smooth;
 }
 
-.background{
+body{
+
+    font-family:'Rajdhani',sans-serif;
+    color:white;
+    overflow:hidden;
+    background:#050608;
+
+}
+
+/* ==========================
+        BACKGROUND
+========================== */
+
+#background{
+
+    position:fixed;
+    inset:0;
+
+    background-image:url("../assets/background.png");
+    background-size:cover;
+    background-position:center;
+
+    transform:scale(1.05);
+
+    filter:blur(4px);
+
+    z-index:-3;
+
+}
+
+#overlay{
 
     position:fixed;
     inset:0;
 
     background:
-    radial-gradient(circle at top,#0b6cff33 0%,transparent 40%),
-    linear-gradient(#06080c,#050505);
+    linear-gradient(rgba(5,8,12,.78),rgba(5,8,12,.88)),
+    radial-gradient(circle at center,transparent 0%,rgba(0,0,0,.35) 100%);
+
+    backdrop-filter:blur(3px);
 
     z-index:-2;
-}
-
-.background::after{
-
-    content:"";
-
-    position:absolute;
-    inset:0;
-
-    background-image:
-
-    linear-gradient(#ffffff08 1px,transparent 1px),
-
-    linear-gradient(90deg,#ffffff08 1px,transparent 1px);
-
-    background-size:60px 60px;
-
-    mask-image:linear-gradient(to bottom,black,transparent);
 
 }
+
+/* ==========================
+          HEADER
+========================== */
 
 header{
 
     width:100%;
+    position:fixed;
+
+    top:30px;
 
     display:flex;
-
     justify-content:space-between;
-
     align-items:center;
 
-    padding:35px 80px;
+    padding:0 80px;
+
+    z-index:100;
 
 }
 
+/* ==========================
+          LOGO
+========================== */
+
 .logo{
 
-    font-family:Orbitron;
+    display:flex;
+    align-items:center;
+    gap:18px;
 
-    font-size:28px;
+}
 
-    font-weight:900;
+.logo h2{
 
-    line-height:1;
+    font-size:26px;
+    font-weight:700;
+    letter-spacing:2px;
 
 }
 
 .logo span{
 
-    color:#45b5ff;
-
-    font-size:15px;
-
+    color:#4dbdff;
     letter-spacing:4px;
+    font-size:14px;
 
 }
+
+.diamond{
+
+    width:42px;
+    height:42px;
+
+    background:#28a9ff;
+
+    transform:rotate(45deg);
+
+    border-radius:8px;
+
+    box-shadow:
+    0 0 20px #28a9ff,
+    0 0 60px #28a9ff66;
+
+}
+
+/* ==========================
+          NAVBAR
+========================== */
 
 nav{
 
     display:flex;
 
-    gap:45px;
+    gap:40px;
+
+    background:rgba(18,20,28,.55);
+
+    border:1px solid rgba(255,255,255,.08);
+
+    backdrop-filter:blur(18px);
+
+    border-radius:20px;
+
+    padding:18px 40px;
+
+    box-shadow:0 20px 60px rgba(0,0,0,.35);
 
 }
 
 nav a{
 
-    color:#ddd;
-
     text-decoration:none;
+    color:white;
+
+    letter-spacing:2px;
+
+    font-weight:600;
 
     transition:.25s;
 
@@ -101,11 +162,24 @@ nav a{
 
 nav a:hover{
 
-    color:#4cc3ff;
+    color:#45c8ff;
 
 }
 
-.hero{
+.active{
+
+    color:#4dc6ff;
+
+}
+
+/* ==========================
+          HERO
+========================== */
+
+main{
+
+    width:100vw;
+    height:100vh;
 
     display:flex;
 
@@ -113,116 +187,243 @@ nav a:hover{
 
     align-items:center;
 
-    min-height:80vh;
+}
+
+.hero{
+
+    width:min(950px,92%);
 
     text-align:center;
 
 }
 
+/* ==========================
+        TITLE
+========================== */
+
 .subtitle{
 
-    color:#4ebeff;
+    color:#4ec7ff;
 
-    letter-spacing:5px;
+    letter-spacing:8px;
 
-    text-transform:uppercase;
+    margin-bottom:18px;
 
-    margin-bottom:20px;
+    font-size:18px;
 
 }
 
 .hero h1{
 
-    font-family:Orbitron;
+    font-family:'Oxanium',sans-serif;
 
-    font-size:72px;
+    font-size:96px;
 
-    line-height:1.05;
+    line-height:0.95;
+
+    text-transform:uppercase;
+
+    text-shadow:
+    0 0 18px rgba(255,255,255,.18);
+
+}
+
+.hero h1 span{
+
+    display:block;
+
+    color:#49c7ff;
+
+    text-shadow:
+
+    0 0 20px #4dc8ff,
+
+    0 0 45px rgba(0,170,255,.55);
 
 }
 
 .description{
 
-    width:700px;
+    width:760px;
 
-    max-width:90%;
+    max-width:95%;
 
-    margin:35px auto;
+    margin:40px auto;
 
-    color:#a8a8a8;
+    color:#c7c7c7;
 
-    font-size:20px;
+    font-size:24px;
 
-    line-height:1.8;
+    line-height:1.7;
 
 }
 
-.buttons{
+/* ==========================
+          STATS
+========================== */
+
+.stats{
 
     display:flex;
 
     justify-content:center;
 
-    gap:20px;
+    gap:22px;
+
+    flex-wrap:wrap;
+
+    margin-bottom:50px;
 
 }
 
-button{
+.card{
 
-    padding:18px 40px;
+    width:180px;
 
-    border-radius:14px;
+    padding:28px;
 
-    font-size:16px;
+    border-radius:20px;
+
+    background:rgba(255,255,255,.05);
+
+    border:1px solid rgba(255,255,255,.08);
+
+    backdrop-filter:blur(20px);
+
+    transition:.3s;
+
+}
+
+.card:hover{
+
+    transform:translateY(-8px);
+
+    border-color:#40c6ff;
+
+    box-shadow:
+
+    0 0 35px rgba(0,170,255,.18);
+
+}
+
+.card h3{
+
+    font-size:46px;
+
+    color:#4bc8ff;
+
+}
+
+.card p{
+
+    letter-spacing:3px;
+
+    color:#ddd;
+
+}
+
+/* ==========================
+         BUTTON
+========================== */
+
+#browse{
+
+    padding:22px 65px;
+
+    border:none;
+
+    border-radius:18px;
 
     cursor:pointer;
+
+    font-size:22px;
+
+    font-family:inherit;
+
+    color:white;
+
+    background:linear-gradient(90deg,#1d9eff,#36c8ff);
+
+    box-shadow:
+
+    0 0 40px rgba(41,169,255,.5);
 
     transition:.25s;
 
 }
 
-.primary{
+#browse:hover{
 
-    background:#1998ff;
+    transform:translateY(-6px) scale(1.03);
 
-    color:white;
+    box-shadow:
 
-    border:none;
-
-    box-shadow:0 0 35px #1998ff66;
+    0 0 70px rgba(40,180,255,.9);
 
 }
 
-.primary:hover{
+/* ==========================
+         FOOTER
+========================== */
 
-    transform:translateY(-4px);
+footer{
 
-    box-shadow:0 0 60px #1998ffaa;
+    position:fixed;
+
+    bottom:25px;
+
+    left:0;
+
+    width:100%;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    padding:0 60px;
+
+    color:#888;
+
+    letter-spacing:2px;
+
+    font-size:13px;
 
 }
 
-.secondary{
+/* ==========================
+        RESPONSIVE
+========================== */
 
-    background:transparent;
+@media(max-width:1000px){
 
-    border:1px solid #4ebeff;
+.hero h1{
 
-    color:#4ebeff;
+font-size:72px;
 
 }
 
-.secondary:hover{
+.description{
 
-    background:#4ebeff22;
+font-size:20px;
+
+}
+
+header{
+
+padding:0 30px;
+
+}
+
+nav{
+
+display:none;
 
 }
 
 footer{
 
-    text-align:center;
+display:none;
 
-    color:#666;
-
-    padding:40px;
+}
 
 }
