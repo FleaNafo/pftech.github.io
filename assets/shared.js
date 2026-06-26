@@ -1,144 +1,150 @@
-// assets/shared.js
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-// Global variables to hold data and current filter state
-let allSubmissions = [];
-let currentMapFilter = 'all';
-
-// Exact Phantom Forces maps list
-const PF_MAPS = [
-    'Bazaar', 'Black Site', 'Capot', 'Castle Keep', 'Containers', 
-    'Crane Site', 'Derrick', 'Desert Storm', 'Dual Crane Site', 'Dunes', 
-    'Dust Bowl', 'Elevation', 'Facility', 'Favela', 'Fortress', 
-    'Foxholes', 'Heat', 'Height', 'Highway Lot', 'Marooned', 
-    'Metro Classic', 'Metro ( 2025 )', 'Mirage', 'Paradise', 'Penthouse', 
-    'Ravod 911', 'Rig', 'Ruins', 'Rundown', 'Second Storm', 
-    'Stardom', 'Suburbia', 'Transit', 'Trench', 'Villa', 'Warehouse'
-];
-
-// Tag styling mappings
-const TAG_CLASS = {
-    'Tech': 'tag-tech',
-    'Glitch': 'tag-glitch',
-    'Tutorial': 'tag-tutorial',
-    'Showcase': 'tag-showcase'
-};
-
-const TAG_ICON = {
-    'Tech': 'ti-bolt',
-    'Glitch': 'ti-bug',
-    'Tutorial': 'ti-book',
-    'Showcase': 'ti-video'
-};
-
-// Helper to escape HTML
-function esc(str) {
-    if (!str) return '';
-    const div = document.createElement('div');
-    div.textContent = str;
-    return div.innerHTML;
+:root {
+  --bg: #ffffff;
+  --surface-0: #f5f5f4;
+  --surface-1: #f0f0ee;
+  --surface-2: #ffffff;
+  --text-primary: #1a1a18;
+  --text-secondary: #5f5e5a;
+  --text-muted: #8f8e89;
+  --border: rgba(0,0,0,0.10);
+  --border-strong: rgba(0,0,0,0.18);
+  --accent: #185fa5;
+  --accent-bg: #e6f1fb;
+  --accent-text: #0c447c;
+  --warning-bg: #faeeda;
+  --warning-text: #633806;
+  --success-bg: #eaf3de;
+  --success-text: #27500a;
+  --discord: #5865F2;
+  --radius: 8px;
 }
 
-// Helper to format dates
-function formatDate(dateStr) {
-    if (!dateStr) return '';
-    try {
-        const d = new Date(dateStr);
-        return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-    } catch (e) {
-        return dateStr;
-    }
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #1a1a18;
+    --surface-0: #242422;
+    --surface-1: #2c2c2a;
+    --surface-2: #323230;
+    --text-primary: #f0f0ee;
+    --text-secondary: #b4b2a9;
+    --text-muted: #888780;
+    --border: rgba(255,255,255,0.10);
+    --border-strong: rgba(255,255,255,0.18);
+    --accent: #378add;
+    --accent-bg: #042c53;
+    --accent-text: #85b7eb;
+    --warning-bg: #412402;
+    --warning-text: #fac775;
+    --success-bg: #173404;
+    --success-text: #c0dd97;
+    --discord: #5865F2;
+  }
 }
 
-// Render a single card (Cleaned up video logic!)
-function renderCard(s) {
-    const type = s.type || 'Tech';
-    const videoUrl = s.video || ''; 
-    
-    return `
-        <div class="card">
-            <div class="card-header">
-                <span class="tag ${TAG_CLASS[type] || 'tag-tech'}"><i class="ti ${TAG_ICON[type] || 'ti-bolt'}"></i>${esc(type)}</span>
-            </div>
-            <h4 class="card-title">${esc(s.title)}${s.map ? ` · <span class="card-map">${esc(s.map)}</span>` : ''}</h4>
-            ${s.desc ? `<p class="card-desc">${esc(s.desc)}</p>` : ''}
-            
-            ${videoUrl ? `<a href="${esc(videoUrl)}" target="_blank" class="card-video"><i class="ti ti-player-play"></i> Watch video</a>` : ''}
-            
-            <div class="card-footer">
-                By ${esc(s.name || 'Anonymous')}${s.date ? ' · ' + formatDate(s.date) : ''}
-            </div>
-        </div>
-    `;
+html { scroll-behavior: smooth; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background: var(--bg); color: var(--text-primary); line-height: 1.6;
 }
+a { color: inherit; text-decoration: none; }
 
-// Main function to render the grid based on the current filter
-function renderGrid() {
-    const grid = document.getElementById('cards-grid');
-    if (!grid) return;
-
-    let filteredData = allSubmissions;
-    
-    // Apply map filter if one is selected
-    if (currentMapFilter !== 'all') {
-        filteredData = allSubmissions.filter(s => s.map === currentMapFilter);
-    }
-
-    if (filteredData.length === 0) {
-        grid.innerHTML = `<div class="empty-state"><i class="ti ti-inbox"></i><p>No submissions found for this map yet.</p></div>`;
-        return;
-    }
-
-    grid.innerHTML = filteredData.map(renderCard).join('');
+/* NAV */
+.pf-nav {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 24px; border-bottom: 0.5px solid var(--border);
+  background: var(--surface-2); position: sticky; top: 0; z-index: 100;
 }
+.pf-logo { display: flex; align-items: center; gap: 10px; font-size: 16px; font-weight: 500; letter-spacing: -0.2px; cursor: pointer; }
+.pf-logo:hover { opacity: 0.8; }
+.pf-logo-icon { width: 28px; height: 28px; border-radius: 6px; background: var(--accent); display: flex; align-items: center; justify-content: center; }
+.pf-logo-icon i { color: #fff; font-size: 15px; }
+.pf-nav-links { display: flex; gap: 4px; }
+.nav-link { padding: 6px 12px; border-radius: var(--radius); font-size: 14px; color: var(--text-secondary); cursor: pointer; transition: background 0.15s, color 0.15s; }
+.nav-link:hover { background: var(--surface-1); color: var(--text-primary); }
+.nav-link.active { background: var(--accent-bg); color: var(--accent-text); }
+.pf-nav-actions { display: flex; gap: 8px; align-items: center; }
+.btn-submit { display: flex; align-items: center; gap: 6px; padding: 7px 14px; border-radius: var(--radius); background: var(--surface-1); border: 0.5px solid var(--border-strong); color: var(--text-secondary); font-size: 13px; font-weight: 500; cursor: pointer; transition: background 0.15s, color 0.15s; }
+.btn-submit:hover { background: var(--surface-0); color: var(--text-primary); }
+.btn-discord { display: flex; align-items: center; gap: 6px; padding: 7px 14px; border-radius: var(--radius); background: var(--discord); color: #fff; font-size: 13px; font-weight: 500; border: none; cursor: pointer; transition: background 0.15s; }
+.btn-discord:hover { background: #4752c4; }
 
-// Build the sidebar map buttons dynamically based on data
-function buildSidebar() {
-    const sidebar = document.getElementById('map-sidebar');
-    if (!sidebar) return;
+/* HERO */
+.hero-divider { border-bottom: 0.5px solid var(--border); }
+.hero { padding: 72px 24px 52px; text-align: center; max-width: 700px; margin: 0 auto; }
+.hero-badge { display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px; border-radius: 20px; background: var(--accent-bg); color: var(--accent-text); font-size: 12px; font-weight: 500; }
+.hero h1 { font-size: 38px; font-weight: 500; letter-spacing: -0.5px; margin-bottom: 14px; }
+.hero h1 span { color: var(--accent); }
+.hero p { font-size: 16px; color: var(--text-secondary); max-width: 460px; margin: 0 auto 32px; line-height: 1.65; }
+.hero-stats { display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; padding-top: 28px; border-top: 0.5px solid var(--border); }
+.stat { text-align: center; }
+.stat-num { font-size: 22px; font-weight: 500; }
+.stat-label { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
 
-    // Get unique maps that actually have submissions
-    const availableMaps = [...new Set(allSubmissions.map(s => s.map).filter(Boolean))].sort();
-    
-    let html = `<h3 class="sidebar-title"><i class="ti ti-map-pin"></i> Filter by Map</h3>`;
-    html += `<button class="map-filter-btn ${currentMapFilter === 'all' ? 'active' : ''}" data-map="all">All Maps</button>`;
-    
-    availableMaps.forEach(map => {
-        html += `<button class="map-filter-btn ${currentMapFilter === map ? 'active' : ''}" data-map="${esc(map)}">${esc(map)}</button>`;
-    });
+/* SECTIONS */
+.section { padding: 44px 24px; border-bottom: 0.5px solid var(--border); max-width: 960px; margin: 0 auto; }
+.section-full { padding: 44px 24px; border-bottom: 0.5px solid var(--border); background: var(--surface-0); }
+.section-inner { max-width: 960px; margin: 0 auto; }
+.section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+.section-title { display: flex; align-items: center; gap: 8px; font-size: 16px; font-weight: 500; }
+.section-title i { color: var(--accent); font-size: 18px; }
 
-    sidebar.innerHTML = html;
+/* SUBMISSION CARDS */
+.submissions-list { display: flex; flex-direction: column; gap: 10px; }
+.sub-card { background: var(--surface-2); border: 0.5px solid var(--border); border-radius: 10px; padding: 14px 16px; display: flex; align-items: flex-start; gap: 12px; }
+.sub-card-body { flex: 1; }
+.sub-card-body h4 { font-size: 14px; font-weight: 500; margin-bottom: 4px; }
+.sub-card-body p { font-size: 13px; color: var(--text-secondary); line-height: 1.5; }
+.sub-card-meta { font-size: 11px; color: var(--text-muted); margin-top: 6px; }
+.sub-card-video { font-size: 12px; color: var(--accent); margin-top: 4px; }
+.card-tag { display: inline-flex; align-items: center; gap: 4px; padding: 3px 8px; border-radius: 20px; font-size: 11px; font-weight: 500; margin-bottom: 0; }
+.tag-tech { background: var(--accent-bg); color: var(--accent-text); }
+.tag-glitch { background: var(--warning-bg); color: var(--warning-text); }
+.tag-tutorial { background: var(--success-bg); color: var(--success-text); }
+.tag-video { background: #f3e8ff; color: #5b21b6; }
 
-    // Add click listeners to the new buttons
-    sidebar.querySelectorAll('.map-filter-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            currentMapFilter = btn.getAttribute('data-map');
-            buildSidebar(); // Re-render to update 'active' class
-            renderGrid();   // Re-render cards
-        });
-    });
+.empty-state { text-align: center; padding: 40px 20px; color: var(--text-muted); font-size: 14px; border: 0.5px dashed var(--border-strong); border-radius: 12px; }
+.loading-state { text-align: center; padding: 40px 20px; color: var(--text-muted); font-size: 14px; }
+
+/* SUBMIT FORM */
+.submit-card { background: var(--surface-2); border: 0.5px solid var(--border); border-radius: 12px; padding: 28px; max-width: 560px; margin: 0 auto; }
+.submit-card h2 { font-size: 18px; font-weight: 500; margin-bottom: 6px; }
+.submit-card > p { font-size: 14px; color: var(--text-secondary); margin-bottom: 22px; }
+.form-group { margin-bottom: 14px; }
+.form-label { font-size: 13px; color: var(--text-secondary); margin-bottom: 5px; display: block; }
+.form-input, .form-select, .form-textarea {
+  width: 100%; padding: 9px 12px; border-radius: var(--radius);
+  border: 0.5px solid var(--border-strong); background: var(--surface-1);
+  color: var(--text-primary); font-size: 14px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  outline: none; transition: border-color 0.15s, box-shadow 0.15s;
 }
+.form-textarea { min-height: 90px; resize: vertical; }
+.form-input:focus, .form-select:focus, .form-textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-bg); }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.btn-primary { width: 100%; padding: 10px; border-radius: var(--radius); background: var(--accent); color: #fff; font-size: 14px; font-weight: 500; border: none; cursor: pointer; margin-top: 12px; transition: opacity 0.15s; }
+.btn-primary:hover { opacity: 0.88; }
+.btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
 
-// Fetch data from your Google Sheet API
-async function initPage() {
-    const grid = document.getElementById('cards-grid');
-    if (!grid) return; // Not on a page that needs this
+/* DISCORD */
+.discord-banner { background: var(--surface-2); border: 0.5px solid var(--border); border-radius: 12px; padding: 28px 32px; display: flex; align-items: center; justify-content: space-between; }
+.discord-text h2 { font-size: 18px; font-weight: 500; margin-bottom: 4px; }
+.discord-text p { font-size: 14px; color: var(--text-secondary); }
+.btn-discord-big { display: flex; align-items: center; gap: 8px; padding: 10px 22px; border-radius: var(--radius); background: var(--discord); color: #fff; font-size: 14px; font-weight: 500; border: none; cursor: pointer; transition: background 0.15s; }
+.btn-discord-big:hover { background: #4752c4; }
 
-    grid.innerHTML = `<div class="loading"><i class="ti ti-loader-2"></i> Loading submissions...</div>`;
+/* FOOTER */
+.footer { padding: 22px 24px; text-align: center; font-size: 13px; color: var(--text-muted); border-top: 0.5px solid var(--border); }
 
-    try {
-        // REPLACE THIS URL with your actual Google Apps Script Web App URL
-        const API_URL = 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE'; 
-        const response = await fetch(API_URL);
-        const data = await response.json();
-        
-        allSubmissions = data; 
-        buildSidebar();
-        renderGrid();
-    } catch (error) {
-        console.error('Error fetching data:', error);
-        grid.innerHTML = `<div class="empty-state"><i class="ti ti-alert-triangle"></i><p>Failed to load submissions. Please try again later.</p></div>`;
-    }
+/* TOAST */
+.toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px); background: var(--text-primary); color: var(--bg); padding: 10px 20px; border-radius: var(--radius); opacity: 0; transition: transform 0.3s, opacity 0.3s; z-index: 1000; }
+.toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+@media (max-width: 640px) {
+  .pf-nav-links { display: none; }
+  .hero h1 { font-size: 28px; }
+  .form-row { grid-template-columns: 1fr; }
+  .hero-stats { gap: 24px; }
+  .discord-banner { flex-direction: column; text-align: center; }
 }
-
-// Run on page load
-document.addEventListener('DOMContentLoaded', initPage);
