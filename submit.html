@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Submit - Phantom Forces Tech</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.10.0/tabler-icons.min.css" />
+  <link rel="stylesheet" href="../assets/shared.css" />
+</head>
+<body>
+
+<nav class="pf-nav">
+  <a href="../index.html" class="pf-logo">
+    <div class="pf-logo-icon"><i class="ti ti-bolt"></i></div>
+    Phantom Forces Tech
+  </a>
+  <div class="pf-nav-links">
+    <a class="nav-link" href="techs.html" data-page="techs">Techs</a>
+    <a class="nav-link" href="glitches.html" data-page="glitches">Glitches</a>
+    <a class="nav-link" href="tutorials.html" data-page="tutorials">Tutorials</a>
+    <a class="nav-link" href="showcases.html" data-page="showcases">Showcases</a>
+    <a class="nav-link active" href="submit.html" data-page="submit">Submit</a>
+  </div>
+  <div class="pf-nav-actions">
+    <a class="btn-discord" href="https://discord.gg/G75a9aZKWp" target="_blank" rel="noopener"><i class="ti ti-brand-discord"></i> Discord</a>
+  </div>
+</nav>
+
+<div class="section-full">
+  <div class="section-inner">
+    <div class="submit-card">
+      <h2>Submit a tech or glitch</h2>
+      <p>Found something new? It'll go live once reviewed and approved.</p>
+      <div class="form-group">
+        <label class="form-label" for="s-name">Your name / username</label>
+        <input class="form-input" id="s-name" type="text" placeholder="e.g. PhantomVet" />
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="s-title">Title</label>
+        <input class="form-input" id="s-title" type="text" placeholder="e.g. Slide cancel on Ravod 911" />
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label" for="s-type">Type</label>
+          <select class="form-select" id="s-type">
+            <option value="Tech">Tech</option>
+            <option value="Glitch">Glitch</option>
+            <option value="Tutorial">Tutorial</option>
+            <option value="Video showcase">Video showcase</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="s-map">Map</label>
+          <select class="form-select" id="s-map">
+            <option value="No specific map">No specific map</option>
+            <option value="Bazaar">Bazaar</option>
+            <option value="Black Site">Black Site</option>
+            <option value="Capot">Capot</option>
+            <option value="Castle Keep">Castle Keep</option>
+            <option value="Containers">Containers</option>
+            <option value="Crane Site">Crane Site</option>
+            <option value="Derrick">Derrick</option>
+            <option value="Desert Storm">Desert Storm</option>
+            <option value="Dual Crane Site">Dual Crane Site</option>
+            <option value="Dunes">Dunes</option>
+            <option value="Dust Bowl">Dust Bowl</option>
+            <option value="Elevation">Elevation</option>
+            <option value="Facility">Facility</option>
+            <option value="Favela">Favela</option>
+            <option value="Fortress">Fortress</option>
+            <option value="Foxholes">Foxholes</option>
+            <option value="Heat">Heat</option>
+            <option value="Height">Height</option>
+            <option value="Highway Lot">Highway Lot</option>
+            <option value="Marooned">Marooned</option>
+            <option value="Metro Classic">Metro Classic</option>
+            <option value="Metro (2025)">Metro (2025)</option>
+            <option value="Mirage">Mirage</option>
+            <option value="Paradise">Paradise</option>
+            <option value="Penthouse">Penthouse</option>
+            <option value="Ravod 911">Ravod 911</option>
+            <option value="Rig">Rig</option>
+            <option value="Ruins">Ruins</option>
+            <option value="Rundown">Rundown</option>
+            <option value="Second Storm">Second Storm</option>
+            <option value="Stardom">Stardom</option>
+            <option value="Suburbia">Suburbia</option>
+            <option value="Transit">Transit</option>
+            <option value="Trench">Trench</option>
+            <option value="Villa">Villa</option>
+            <option value="Warehouse">Warehouse</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="s-desc">Description</label>
+        <textarea class="form-textarea" id="s-desc" placeholder="Describe how to perform the tech or reproduce the glitch..."></textarea>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="s-video">Video link (optional)</label>
+        <input class="form-input" id="s-video" type="text" placeholder="YouTube or Roblox clip URL" />
+      </div>
+      <button class="btn-primary" id="submit-btn" onclick="handleSubmit()">Submit for review</button>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-inner" style="text-align: center;">
+    <h3 style="font-size: 18px; margin-bottom: 20px;">Submission Tips</h3>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
+      <div>
+        <div style="font-size: 20px; margin-bottom: 8px;"><i class="ti ti-bulb" style="color: var(--accent);"></i></div>
+        <h4 style="font-weight: 500; margin-bottom: 4px;">Be Specific</h4>
+        <p style="font-size: 13px; color: var(--text-secondary);">Include step-by-step instructions so others can reproduce it</p>
+      </div>
+      <div>
+        <div style="font-size: 20px; margin-bottom: 8px;"><i class="ti ti-video" style="color: var(--accent);"></i></div>
+        <h4 style="font-weight: 500; margin-bottom: 4px;">Add a Video</h4>
+        <p style="font-size: 13px; color: var(--text-secondary);">Videos help others understand the tech or glitch better</p>
+      </div>
+      <div>
+        <div style="font-size: 20px; margin-bottom: 8px;"><i class="ti ti-check" style="color: var(--accent);"></i></div>
+        <h4 style="font-weight: 500; margin-bottom: 4px;">Get Approved</h4>
+        <p style="font-size: 13px; color: var(--text-secondary);">Your submission will be reviewed before going live</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="footer">© 2026 Phantom Forces Tech · Made by the community, for the community</div>
+<div class="toast" id="toast"></div>
+<script src="../assets/shared.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    setActiveNav('submit');
+  });
+</script>
+</body>
+</html>
