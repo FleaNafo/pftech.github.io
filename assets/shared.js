@@ -36,6 +36,7 @@ const EMBED_COLOR = {
 };
 
 let allSubmissions = [];
+let claimedNames = [];
 let currentFilter = { map: 'All Maps', sort: 'newest', search: '' };
 let votedKeys = JSON.parse(localStorage.getItem('pf_voted_keys') || '[]');
 
@@ -279,6 +280,7 @@ async function loadSubmissions(typeFilter, mapFilter) {
     const res = await fetch(API);
     const data = await res.json();
     allSubmissions = data.submissions || [];
+    claimedNames = (data.claimedNames || []).map(n => n.toLowerCase());
 
     TYPES.forEach(type => {
       const count = allSubmissions.filter(s => s.type === type).length;
@@ -318,11 +320,12 @@ function renderLeaderboard() {
   const medals = ['🥇','🥈','🥉'];
   el.innerHTML = sorted.map(([name, count], i) => {
     const best = topVoted[name];
+    const verified = claimedNames.includes(name.toLowerCase());
     return `
       <div class="leaderboard-card">
         <div class="leaderboard-rank">${medals[i] || `#${i+1}`}</div>
         <div class="leaderboard-body">
-          <div class="leaderboard-name">${esc(name)}</div>
+          <div class="leaderboard-name">${esc(name)} ${verified ? '<span class="badge-verified">🔒 Verified</span>' : ''}</div>
           <div class="leaderboard-meta">${count} submission${count !== 1 ? 's' : ''}${best ? ` · Best: "${esc(best.title)}" (${parseInt(best.votes)||0} votes)` : ''}</div>
         </div>
         <div class="leaderboard-count">${count}</div>
