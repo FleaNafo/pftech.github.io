@@ -31,7 +31,62 @@
     <div class="submit-card">
       <h2>Submit a tech or glitch</h2>
       <p>Found something new? It'll go live once reviewed and approved.</p>
-      <div class="form-group">
+
+      <!-- ACCOUNT BOX -->
+      <div class="account-box" id="account-box">
+
+        <!-- Logged out state -->
+        <div id="auth-panel">
+          <div class="auth-tabs">
+            <button class="auth-tab active" onclick="switchTab('login')">Login</button>
+            <button class="auth-tab" onclick="switchTab('register')">Create account</button>
+          </div>
+
+          <div id="tab-login">
+            <div class="form-row" style="margin-top:10px">
+              <div class="form-group">
+                <label class="form-label" for="auth-username">Username</label>
+                <input class="form-input" id="auth-username" type="text" placeholder="Your username" />
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="auth-password">Password</label>
+                <input class="form-input" id="auth-password" type="password" placeholder="Your password" />
+              </div>
+            </div>
+            <button class="btn-auth" onclick="handleLogin()"><i class="ti ti-login"></i> Login</button>
+          </div>
+
+          <div id="tab-register" style="display:none">
+            <div class="form-row" style="margin-top:10px">
+              <div class="form-group">
+                <label class="form-label" for="reg-username">Choose a username</label>
+                <input class="form-input" id="reg-username" type="text" placeholder="e.g. PhantomVet" />
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="reg-password">Choose a password</label>
+                <input class="form-input" id="reg-password" type="password" placeholder="Keep it safe!" />
+              </div>
+            </div>
+            <button class="btn-auth" onclick="handleRegister()"><i class="ti ti-user-plus"></i> Create account</button>
+          </div>
+        </div>
+
+        <!-- Logged in state -->
+        <div id="logged-in-panel" style="display:none">
+          <div class="logged-in-info">
+            <div class="logged-in-avatar" id="logged-in-avatar"></div>
+            <div>
+              <div class="logged-in-name" id="logged-in-name"></div>
+              <div class="logged-in-sub">🔒 Verified account</div>
+            </div>
+            <button class="btn-logout" onclick="handleLogout()"><i class="ti ti-logout"></i> Logout</button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- SUBMIT FORM -->
+      <div class="form-group" style="margin-top:4px">
         <label class="form-label" for="s-name">Your name / username</label>
         <input class="form-input" id="s-name" type="text" placeholder="e.g. PhantomVet" />
       </div>
@@ -53,42 +108,18 @@
           <label class="form-label" for="s-map">Map</label>
           <select class="form-select" id="s-map">
             <option value="No specific map">No specific map</option>
-            <option value="Bazaar">Bazaar</option>
-            <option value="Black Site">Black Site</option>
-            <option value="Capot">Capot</option>
-            <option value="Castle Keep">Castle Keep</option>
-            <option value="Containers">Containers</option>
-            <option value="Crane Site">Crane Site</option>
-            <option value="Derrick">Derrick</option>
-            <option value="Desert Storm">Desert Storm</option>
-            <option value="Dual Crane Site">Dual Crane Site</option>
-            <option value="Dunes">Dunes</option>
-            <option value="Dust Bowl">Dust Bowl</option>
-            <option value="Elevation">Elevation</option>
-            <option value="Facility">Facility</option>
-            <option value="Favela">Favela</option>
-            <option value="Fortress">Fortress</option>
-            <option value="Foxholes">Foxholes</option>
-            <option value="Heat">Heat</option>
-            <option value="Height">Height</option>
-            <option value="Highway Lot">Highway Lot</option>
-            <option value="Marooned">Marooned</option>
-            <option value="Metro Classic">Metro Classic</option>
-            <option value="Metro (2025)">Metro (2025)</option>
-            <option value="Mirage">Mirage</option>
-            <option value="Paradise">Paradise</option>
-            <option value="Penthouse">Penthouse</option>
-            <option value="Ravod 911">Ravod 911</option>
-            <option value="Rig">Rig</option>
-            <option value="Ruins">Ruins</option>
-            <option value="Rundown">Rundown</option>
-            <option value="Second Storm">Second Storm</option>
-            <option value="Stardom">Stardom</option>
-            <option value="Suburbia">Suburbia</option>
-            <option value="Transit">Transit</option>
-            <option value="Trench">Trench</option>
-            <option value="Villa">Villa</option>
-            <option value="Warehouse">Warehouse</option>
+            <option>Bazaar</option><option>Black Site</option><option>Capot</option>
+            <option>Castle Keep</option><option>Containers</option><option>Crane Site</option>
+            <option>Derrick</option><option>Desert Storm</option><option>Dual Crane Site</option>
+            <option>Dunes</option><option>Dust Bowl</option><option>Elevation</option>
+            <option>Facility</option><option>Favela</option><option>Fortress</option>
+            <option>Foxholes</option><option>Heat</option><option>Height</option>
+            <option>Highway Lot</option><option>Marooned</option><option>Metro Classic</option>
+            <option>Metro (2025)</option><option>Mirage</option><option>Paradise</option>
+            <option>Penthouse</option><option>Ravod 911</option><option>Rig</option>
+            <option>Ruins</option><option>Rundown</option><option>Second Storm</option>
+            <option>Stardom</option><option>Suburbia</option><option>Transit</option>
+            <option>Trench</option><option>Villa</option><option>Warehouse</option>
           </select>
         </div>
       </div>
@@ -132,9 +163,183 @@
 <div class="toast" id="toast"></div>
 <script src="../assets/shared.js"></script>
 <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    setActiveNav('submit');
-  });
+  PAGE_TYPE = null;
+
+  // ── Auth state ──────────────────────────────────────
+  function getSession() {
+    try { return JSON.parse(localStorage.getItem('pf_session') || 'null'); } catch { return null; }
+  }
+  function saveSession(user) {
+    localStorage.setItem('pf_session', JSON.stringify(user));
+  }
+  function clearSession() {
+    localStorage.removeItem('pf_session');
+  }
+
+  function applySession(user) {
+    if (user) {
+      document.getElementById('auth-panel').style.display = 'none';
+      document.getElementById('logged-in-panel').style.display = 'block';
+      document.getElementById('logged-in-name').textContent = user.username;
+      document.getElementById('logged-in-avatar').textContent = user.username.charAt(0).toUpperCase();
+      const nameInput = document.getElementById('s-name');
+      nameInput.value = user.username;
+      nameInput.readOnly = true;
+      nameInput.style.opacity = '0.6';
+    } else {
+      document.getElementById('auth-panel').style.display = 'block';
+      document.getElementById('logged-in-panel').style.display = 'none';
+      const nameInput = document.getElementById('s-name');
+      nameInput.readOnly = false;
+      nameInput.style.opacity = '1';
+      nameInput.value = '';
+    }
+  }
+
+  function switchTab(tab) {
+    document.getElementById('tab-login').style.display = tab === 'login' ? 'block' : 'none';
+    document.getElementById('tab-register').style.display = tab === 'register' ? 'block' : 'none';
+    document.querySelectorAll('.auth-tab').forEach((t, i) => {
+      t.classList.toggle('active', (i === 0 && tab === 'login') || (i === 1 && tab === 'register'));
+    });
+  }
+
+  async function handleLogin() {
+    const username = document.getElementById('auth-username').value.trim();
+    const password = document.getElementById('auth-password').value.trim();
+    if (!username || !password) { showToast('Please enter username and password.'); return; }
+
+    try {
+      const res = await fetch(API, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'login', username, password })
+      });
+      const data = await res.json();
+      if (data.success) {
+        const user = { username: data.username, password };
+        saveSession(user);
+        applySession(user);
+        showToast(`Welcome back, ${data.username}! ✓`);
+      } else {
+        showToast(data.error || 'Login failed.');
+      }
+    } catch(e) {
+      showToast('Something went wrong. Try again.');
+    }
+  }
+
+  async function handleRegister() {
+    const username = document.getElementById('reg-username').value.trim();
+    const password = document.getElementById('reg-password').value.trim();
+    if (!username) { showToast('Please choose a username.'); return; }
+    if (!password) { showToast('Please choose a password.'); return; }
+    if (username.length < 2) { showToast('Username must be at least 2 characters.'); return; }
+    if (password.length < 4) { showToast('Password must be at least 4 characters.'); return; }
+
+    try {
+      const res = await fetch(API, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'register', username, password })
+      });
+      const data = await res.json();
+      if (data.success) {
+        const user = { username, password };
+        saveSession(user);
+        applySession(user);
+        showToast(`Account created! Welcome, ${username} ✓`);
+      } else {
+        showToast(data.error || 'Registration failed.');
+      }
+    } catch(e) {
+      showToast('Something went wrong. Try again.');
+    }
+  }
+
+  function handleLogout() {
+    clearSession();
+    applySession(null);
+    showToast('Logged out.');
+  }
+
+  // Override handleSubmit to include password for verified users
+  async function handleSubmit() {
+    const session = getSession();
+    const name  = document.getElementById('s-name').value.trim();
+    const title = document.getElementById('s-title').value.trim();
+    const type  = document.getElementById('s-type').value;
+    const map   = document.getElementById('s-map').value;
+    const desc  = document.getElementById('s-desc').value.trim();
+    const video = document.getElementById('s-video').value.trim();
+
+    if (!name)  { showToast('Please enter your username.'); return; }
+    if (!title) { showToast('Please add a title.'); return; }
+    if (!desc)  { showToast('Please add a description.'); return; }
+
+    const btn = document.getElementById('submit-btn');
+    btn.disabled = true;
+    btn.textContent = 'Submitting...';
+
+    try {
+      const payload = { name, title, type, map, desc, video };
+      if (session) payload.password = session.password;
+
+      const res = await fetch(API, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json();
+
+      if (!data.success) {
+        showToast(data.error || 'Submission failed.');
+        btn.disabled = false;
+        btn.textContent = 'Submit for review';
+        return;
+      }
+
+      // Discord notification
+      const fields = [
+        { name: 'Type', value: type, inline: true },
+        { name: 'Submitted by', value: name + (session ? ' 🔒' : ''), inline: true },
+      ];
+      if (map && map !== 'No specific map') fields.push({ name: 'Map', value: map, inline: true });
+      if (desc)  fields.push({ name: 'Description', value: desc });
+      if (video) fields.push({ name: 'Video', value: video });
+
+      await fetch(WEBHOOK, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          embeds: [{
+            title: `📥 New ${type}: ${title}`,
+            color: ({ Tech: 0x185fa5, Glitch: 0xba7517, Tutorial: 0x3b6d11, 'Video showcase': 0x7c3aed })[type] || 0x185fa5,
+            fields,
+            timestamp: new Date().toISOString(),
+            footer: { text: 'Phantom Forces Tech · Pending approval in Google Sheet' }
+          }]
+        })
+      });
+
+      showToast("Submitted! It'll go live once approved. ✓");
+      if (!session) document.getElementById('s-name').value = '';
+      document.getElementById('s-title').value = '';
+      document.getElementById('s-map').value   = 'No specific map';
+      document.getElementById('s-desc').value  = '';
+      document.getElementById('s-video').value = '';
+
+    } catch(e) {
+      showToast('Something went wrong. Try again.');
+    }
+
+    btn.disabled = false;
+    btn.textContent = 'Submit for review';
+  }
+
+  // Init
+  setActiveNav('submit');
+  applySession(getSession());
 </script>
 </body>
 </html>
