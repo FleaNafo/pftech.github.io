@@ -1,4 +1,4 @@
-const API = 'https://script.google.com/macros/s/AKfycbyMKOcKID6Uc4_c9L_5oJdI472gJPc93lLNQQ9PlZsEcCpTvz7Tf6QgwHbV0IENFeL4/exec';
+const API = 'https://script.google.com/macros/s/AKfycbyPqdIwfRMGpQ-20R_OeZwkb3ykStr8S8eEMQw8-5HhtYXuqyZWCcU6LQryy9D3f0mr/exec';
 const WEBHOOK = 'https://discord.com/api/webhooks/1519986780177305611/LcIjXkgLnvSYeFPzx1kLM6edgCPaeR-qjdeT5xkLRUSK1RAgJxDlCFHd8UXLjNIWVvbW';
 
 const MAPS = [
