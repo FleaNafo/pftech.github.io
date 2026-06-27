@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Showcases - Phantom Forces Tech</title>
+  <title>Video Showcases - Phantom Forces Tech</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.10.0/tabler-icons.min.css" />
   <link rel="stylesheet" href="../assets/shared.css" />
 </head>
@@ -14,10 +14,11 @@
     Phantom Forces Tech
   </a>
   <div class="pf-nav-links">
-    <a class="nav-link" href="techs.html" data-page="techs">Techs</a>
-    <a class="nav-link" href="glitches.html" data-page="glitches">Glitches</a>
-    <a class="nav-link" href="tutorials.html" data-page="tutorials">Tutorials</a>
+    <a class="nav-link " href="techs.html" data-page="techs">Techs</a>
+    <a class="nav-link " href="glitches.html" data-page="glitches">Glitches</a>
+    <a class="nav-link " href="tutorials.html" data-page="tutorials">Tutorials</a>
     <a class="nav-link active" href="showcases.html" data-page="showcases">Showcases</a>
+    <a class="nav-link" href="requests.html" data-page="requests">Requests</a>
     <a class="nav-link" href="submit.html" data-page="submit">Submit</a>
   </div>
   <div class="pf-nav-actions">
@@ -29,19 +30,21 @@
 <div class="section">
   <div class="section-header">
     <div class="section-title"><i class="ti ti-player-play"></i> Video Showcases</div>
-    <div style="font-size: 13px; color: var(--text-muted);">Total: <span id="count-video-showcase">—</span></div>
+    <div style="font-size:13px;color:var(--text-muted);">Total: <span id="count-video-showcase">—</span></div>
   </div>
   <div id="pf-toolbar" class="toolbar"></div>
-  <div id="submissions-list" class="submissions-list"><div class="loading-state"><i class="ti ti-loader"></i> Loading...</div></div>
+  <div id="submissions-list" class="submissions-list">
+    <div class="loading-state"><i class="ti ti-loader"></i> Loading...</div>
+  </div>
 </div>
 
 <div class="section">
   <div class="discord-banner">
     <div class="discord-text">
-      <h2>Got a clip to show off?</h2>
-      <p>Submit your video showcase and get featured in the community archive.</p>
+      <h2>Found something new?</h2>
+      <p>Submit it for review and get featured in the community archive.</p>
     </div>
-    <a class="btn-discord-big" href="submit.html"><i class="ti ti-upload"></i> Submit showcase</a>
+    <a class="btn-discord-big" href="submit.html"><i class="ti ti-upload"></i> Submit</a>
   </div>
 </div>
 
@@ -49,10 +52,9 @@
 <div class="toast" id="toast"></div>
 <script src="../assets/shared.js"></script>
 <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    loadSubmissions('Video showcase');
-    setActiveNav('showcases');
-  });
+  PAGE_TYPE = 'Video showcase';
+  setActiveNav('showcases');
+  loadSubmissions(PAGE_TYPE);
 </script>
 </body>
 </html>
