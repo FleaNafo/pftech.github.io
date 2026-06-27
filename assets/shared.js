@@ -230,8 +230,9 @@ function renderList(typeFilter, mapFilter) {
   const el = document.getElementById('submissions-list');
   if (!el) return;
 
-  let subs = typeFilter ? allSubmissions.filter(s => s.type === typeFilter) : allSubmissions;
-  if (mapFilter) subs = allSubmissions.filter(s => s.map === mapFilter);
+  let subs = [...allSubmissions];
+  if (typeFilter) subs = subs.filter(s => s.type === typeFilter);
+  if (mapFilter) subs = subs.filter(s => s.map === mapFilter);
 
   const filtered = applyFilters(subs);
 
