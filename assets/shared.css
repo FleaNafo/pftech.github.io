@@ -440,3 +440,53 @@ a { color: inherit; text-decoration: none; }
   color: var(--text-secondary); cursor: pointer; transition: all 0.15s;
 }
 .map-tab.active, .map-tab:hover { background: var(--accent-bg); color: var(--accent-text); border-color: var(--accent); }
+
+/* ACCOUNT BOX */
+.account-box {
+  background: var(--surface-1); border: 0.5px solid var(--border);
+  border-radius: 10px; padding: 16px; margin-bottom: 20px;
+}
+.auth-tabs { display: flex; gap: 4px; margin-bottom: 4px; }
+.auth-tab {
+  flex: 1; padding: 7px; border-radius: var(--radius);
+  border: 0.5px solid var(--border-strong); background: transparent;
+  color: var(--text-secondary); font-size: 13px; font-weight: 500; cursor: pointer;
+  transition: all 0.15s;
+}
+.auth-tab.active { background: var(--accent-bg); color: var(--accent-text); border-color: var(--accent); }
+.btn-auth {
+  width: 100%; padding: 9px; border-radius: var(--radius);
+  background: var(--accent); color: #fff;
+  font-size: 13px; font-weight: 500; border: none; cursor: pointer;
+  margin-top: 10px; display: flex; align-items: center; justify-content: center; gap: 6px;
+  transition: opacity 0.15s;
+}
+.btn-auth:hover { opacity: 0.88; }
+
+/* LOGGED IN STATE */
+.logged-in-info {
+  display: flex; align-items: center; gap: 12px;
+}
+.logged-in-avatar {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: var(--accent); color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; font-weight: 600; flex-shrink: 0;
+}
+.logged-in-name { font-size: 14px; font-weight: 500; }
+.logged-in-sub { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+.btn-logout {
+  margin-left: auto; padding: 6px 12px; border-radius: var(--radius);
+  border: 0.5px solid var(--border-strong); background: transparent;
+  color: var(--text-muted); font-size: 12px; cursor: pointer;
+  display: flex; align-items: center; gap: 4px; transition: all 0.15s;
+}
+.btn-logout:hover { border-color: #ef4444; color: #ef4444; }
+
+/* VERIFIED BADGE on leaderboard */
+.badge-verified {
+  display: inline-flex; align-items: center; gap: 3px;
+  padding: 1px 6px; border-radius: 4px;
+  background: var(--accent-bg); color: var(--accent-text);
+  font-size: 10px; font-weight: 600;
+}
