@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Request Board - Phantom Forces Tech</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.10.0/tabler-icons.min.css" />
+  <link rel="stylesheet" href="../assets/shared.css" />
+</head>
+<body>
+<nav class="pf-nav">
+  <a href="../index.html" class="pf-logo">
+    <div class="pf-logo-icon"><i class="ti ti-bolt"></i></div>
+    Phantom Forces Tech
+  </a>
+  <div class="pf-nav-links">
+    <a class="nav-link" href="techs.html" data-page="techs">Techs</a>
+    <a class="nav-link" href="glitches.html" data-page="glitches">Glitches</a>
+    <a class="nav-link" href="tutorials.html" data-page="tutorials">Tutorials</a>
+    <a class="nav-link" href="showcases.html" data-page="showcases">Showcases</a>
+    <a class="nav-link active" href="requests.html" data-page="requests">Requests</a>
+    <a class="nav-link" href="submit.html" data-page="submit">Submit</a>
+  </div>
+  <div class="pf-nav-actions">
+    <a class="btn-submit" href="submit.html"><i class="ti ti-upload"></i> Submit</a>
+    <a class="btn-discord" href="https://discord.gg/G75a9aZKWp" target="_blank" rel="noopener"><i class="ti ti-brand-discord"></i> Discord</a>
+  </div>
+</nav>
+
+<div class="section-full">
+  <div class="section-inner">
+    <div class="submit-card">
+      <h2>Post a request</h2>
+      <p>Looking for a specific tech or glitch? Ask the community.</p>
+      <div class="form-group">
+        <label class="form-label" for="r-name">Your name / username</label>
+        <input class="form-input" id="r-name" type="text" placeholder="e.g. PhantomVet" />
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="r-request">What are you looking for?</label>
+        <textarea class="form-textarea" id="r-request" placeholder="e.g. Does anyone know an OOB spot on Ravod 911?" style="min-height:70px"></textarea>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="r-map">Map (optional)</label>
+        <select class="form-select" id="r-map">
+          <option value="No specific map">No specific map</option>
+          <option>Bazaar</option><option>Black Site</option><option>Capot</option>
+          <option>Castle Keep</option><option>Containers</option><option>Crane Site</option>
+          <option>Derrick</option><option>Desert Storm</option><option>Dual Crane Site</option>
+          <option>Dunes</option><option>Dust Bowl</option><option>Elevation</option>
+          <option>Facility</option><option>Favela</option><option>Fortress</option>
+          <option>Foxholes</option><option>Heat</option><option>Height</option>
+          <option>Highway Lot</option><option>Marooned</option><option>Metro Classic</option>
+          <option>Metro (2025)</option><option>Mirage</option><option>Paradise</option>
+          <option>Penthouse</option><option>Ravod 911</option><option>Rig</option>
+          <option>Ruins</option><option>Rundown</option><option>Second Storm</option>
+          <option>Stardom</option><option>Suburbia</option><option>Transit</option>
+          <option>Trench</option><option>Villa</option><option>Warehouse</option>
+        </select>
+      </div>
+      <button class="btn-primary" id="request-btn" onclick="handleRequest()">Post request</button>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-title"><i class="ti ti-help"></i> Open Requests</div>
+  </div>
+  <div id="requests-list" class="requests-list">
+    <div class="loading-state"><i class="ti ti-loader"></i> Loading...</div>
+  </div>
+</div>
+
+<div class="footer">© 2026 Phantom Forces Tech · Made by the community, for the community</div>
+<div class="toast" id="toast"></div>
+<script src="../assets/shared.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    setActiveNav('requests');
+    loadRequests();
+  });
+</script>
+</body>
+</html>
