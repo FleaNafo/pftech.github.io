@@ -39,6 +39,10 @@ let allSubmissions = [];
 let currentFilter = { map: 'All Maps', sort: 'newest', search: '' };
 let votedKeys = JSON.parse(localStorage.getItem('pf_voted_keys') || '[]');
 
+// Set by each page to keep interval scoped correctly
+let PAGE_TYPE = null;
+let PAGE_MAP = null;
+
 function esc(str) {
   return String(str || '')
     .replace(/&/g,'&amp;').replace(/</g,'&lt;')
@@ -82,9 +86,6 @@ function renderCard(s) {
   const voted = votedKeys.includes(key);
   const votes = parseInt(s.votes) || 0;
   const newBadge = isNew(s.date) ? `<span class="badge-new">NEW</span>` : '';
-  const mapLink = s.map && s.map !== 'No specific map'
-    ? `<a href="map.html?map=${encodeURIComponent(s.map)}" class="map-link">· ${esc(s.map)}</a>`
-    : (s.map && s.map !== 'No specific map' ? `· ${esc(s.map)}` : '');
 
   return `
     <div class="sub-card">
@@ -116,18 +117,14 @@ function renderCard(s) {
 
 async function handleUpvote(btn, key, date, title) {
   if (votedKeys.includes(key)) { showToast('You already upvoted this!'); return; }
-
   try {
-    const res = await fetch(API, {
-      method: 'POST',
-      mode: 'no-cors',
+    await fetch(API, {
+      method: 'POST', mode: 'no-cors',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ action: 'upvote', date, title })
     });
-
     votedKeys.push(key);
     localStorage.setItem('pf_voted_keys', JSON.stringify(votedKeys));
-
     const countEl = btn.querySelector('.vote-count');
     if (countEl) countEl.textContent = parseInt(countEl.textContent || 0) + 1;
     btn.classList.add('voted');
@@ -137,7 +134,6 @@ async function handleUpvote(btn, key, date, title) {
   }
 }
 
-// Status modal
 function openStatusModal(key, date, title) {
   let modal = document.getElementById('status-modal');
   if (!modal) {
@@ -156,9 +152,7 @@ function openStatusModal(key, date, title) {
       </div>`;
     document.body.appendChild(modal);
   }
-  modal._key = key;
-  modal._date = date;
-  modal._title = title;
+  modal._key = key; modal._date = date; modal._title = title;
   modal.style.display = 'flex';
 }
 
@@ -172,15 +166,12 @@ async function submitStatus(status) {
   if (!modal) return;
   const { _date, _title } = modal;
   closeStatusModal();
-
   try {
     await fetch(API, {
-      method: 'POST',
-      mode: 'no-cors',
+      method: 'POST', mode: 'no-cors',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ action: 'suggest_status', date: _date, title: _title, status })
     });
-
     await fetch(WEBHOOK, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -196,7 +187,6 @@ async function submitStatus(status) {
         }]
       })
     });
-
     showToast(`Thanks! "${status}" suggestion sent for review.`);
   } catch(e) {
     showToast('Failed to send suggestion. Try again.');
@@ -206,10 +196,7 @@ async function submitStatus(status) {
 function applyFilters(subs) {
   let filtered = [...subs];
   const { map, sort, search } = currentFilter;
-
-  if (map && map !== 'All Maps') {
-    filtered = filtered.filter(s => s.map && s.map === map);
-  }
+  if (map && map !== 'All Maps') filtered = filtered.filter(s => s.map && s.map === map);
   if (search) {
     const q = search.toLowerCase();
     filtered = filtered.filter(s =>
@@ -222,7 +209,6 @@ function applyFilters(subs) {
   if (sort === 'newest') filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
   else if (sort === 'oldest') filtered.sort((a, b) => new Date(a.date) - new Date(b.date));
   else if (sort === 'top') filtered.sort((a, b) => (parseInt(b.votes) || 0) - (parseInt(a.votes) || 0));
-
   return filtered;
 }
 
@@ -252,11 +238,9 @@ function renderList(typeFilter, mapFilter) {
 function buildToolbar(typeFilter, mapFilter) {
   const toolbar = document.getElementById('pf-toolbar');
   if (!toolbar) return;
-
   const mapOptions = MAPS.map(m =>
     `<option value="${esc(m)}" ${m === currentFilter.map ? 'selected' : ''}>${esc(m)}</option>`
   ).join('');
-
   toolbar.innerHTML = `
     <div class="toolbar-inner">
       <div class="toolbar-search">
@@ -318,11 +302,9 @@ function updateCounter(type, count) {
   if (el) el.textContent = count;
 }
 
-// Leaderboard
 function renderLeaderboard() {
   const el = document.getElementById('leaderboard-list');
   if (!el) return;
-
   const counts = {};
   const topVoted = {};
   allSubmissions.forEach(s => {
@@ -331,14 +313,8 @@ function renderLeaderboard() {
     const v = parseInt(s.votes) || 0;
     if (!topVoted[name] || v > (parseInt(topVoted[name].votes) || 0)) topVoted[name] = s;
   });
-
   const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]).slice(0, 10);
-
-  if (sorted.length === 0) {
-    el.innerHTML = `<div class="empty-state">No submissions yet.</div>`;
-    return;
-  }
-
+  if (sorted.length === 0) { el.innerHTML = `<div class="empty-state">No submissions yet.</div>`; return; }
   const medals = ['🥇','🥈','🥉'];
   el.innerHTML = sorted.map(([name, count], i) => {
     const best = topVoted[name];
@@ -354,17 +330,13 @@ function renderLeaderboard() {
   }).join('');
 }
 
-// Top submissions for homepage
 function renderTopSubmissions() {
   const el = document.getElementById('top-submissions');
   if (!el) return;
-
   const top = [...allSubmissions]
     .sort((a, b) => (parseInt(b.votes) || 0) - (parseInt(a.votes) || 0))
     .slice(0, 3);
-
   if (top.length === 0) { el.innerHTML = ''; return; }
-
   el.innerHTML = top.map(s => `
     <div class="sub-card">
       <div style="padding-top:2px">
@@ -380,21 +352,14 @@ function renderTopSubmissions() {
     </div>`).join('');
 }
 
-// Requests
 async function loadRequests() {
   const el = document.getElementById('requests-list');
   if (!el) return;
-
   try {
     const res = await fetch(API + '?action=requests');
     const data = await res.json();
     const requests = (data.requests || []).reverse();
-
-    if (requests.length === 0) {
-      el.innerHTML = `<div class="empty-state">No requests yet — be the first!</div>`;
-      return;
-    }
-
+    if (requests.length === 0) { el.innerHTML = `<div class="empty-state">No requests yet — be the first!</div>`; return; }
     el.innerHTML = requests.map(r => `
       <div class="request-card ${r.claimed === true || r.claimed === 'TRUE' ? 'claimed' : ''}">
         <div class="request-body">
@@ -411,21 +376,15 @@ async function handleRequest() {
   const name = document.getElementById('r-name').value.trim();
   const request = document.getElementById('r-request').value.trim();
   const map = document.getElementById('r-map').value;
-
-  if (!request) { showToast('Please describe what you\'re looking for.'); return; }
-
+  if (!request) { showToast("Please describe what you're looking for."); return; }
   const btn = document.getElementById('request-btn');
-  btn.disabled = true;
-  btn.textContent = 'Posting...';
-
+  btn.disabled = true; btn.textContent = 'Posting...';
   try {
     await fetch(API, {
-      method: 'POST',
-      mode: 'no-cors',
+      method: 'POST', mode: 'no-cors',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ action: 'request', name, request, map })
     });
-
     await fetch(WEBHOOK, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -442,19 +401,13 @@ async function handleRequest() {
         }]
       })
     });
-
     showToast('Request posted! ✓');
     document.getElementById('r-name').value = '';
     document.getElementById('r-request').value = '';
     document.getElementById('r-map').value = 'No specific map';
-
     setTimeout(() => loadRequests(), 1000);
-  } catch(e) {
-    showToast('Something went wrong. Try again.');
-  }
-
-  btn.disabled = false;
-  btn.textContent = 'Post request';
+  } catch(e) { showToast('Something went wrong. Try again.'); }
+  btn.disabled = false; btn.textContent = 'Post request';
 }
 
 async function handleSubmit() {
@@ -464,22 +417,16 @@ async function handleSubmit() {
   const map   = document.getElementById('s-map').value;
   const desc  = document.getElementById('s-desc').value.trim();
   const video = document.getElementById('s-video').value.trim();
-
   if (!title) { showToast('Please add a title.'); return; }
   if (!desc)  { showToast('Please add a description.'); return; }
-
   const btn = document.getElementById('submit-btn');
-  btn.disabled = true;
-  btn.textContent = 'Submitting...';
-
+  btn.disabled = true; btn.textContent = 'Submitting...';
   try {
     await fetch(API, {
-      method: 'POST',
-      mode: 'no-cors',
+      method: 'POST', mode: 'no-cors',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name, title, type, map, desc, video })
     });
-
     const fields = [
       { name: 'Type', value: type, inline: true },
       { name: 'Submitted by', value: name || 'Anonymous', inline: true },
@@ -487,7 +434,6 @@ async function handleSubmit() {
     if (map && map !== 'No specific map') fields.push({ name: 'Map', value: map, inline: true });
     if (desc)  fields.push({ name: 'Description', value: desc });
     if (video) fields.push({ name: 'Video', value: video });
-
     await fetch(WEBHOOK, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -501,19 +447,14 @@ async function handleSubmit() {
         }]
       })
     });
-
     showToast("Submitted! It'll go live once approved. ✓");
     document.getElementById('s-name').value  = '';
     document.getElementById('s-title').value = '';
     document.getElementById('s-map').value   = 'No specific map';
     document.getElementById('s-desc').value  = '';
     document.getElementById('s-video').value = '';
-  } catch(e) {
-    showToast('Something went wrong. Try again.');
-  }
-
-  btn.disabled = false;
-  btn.textContent = 'Submit for review';
+  } catch(e) { showToast('Something went wrong. Try again.'); }
+  btn.disabled = false; btn.textContent = 'Submit for review';
 }
 
 function setActiveNav(pageName) {
@@ -522,8 +463,5 @@ function setActiveNav(pageName) {
   if (activeLink) activeLink.classList.add('active');
 }
 
-window.addEventListener('DOMContentLoaded', () => {
-  loadSubmissions();
-});
-
-setInterval(() => loadSubmissions(), 30000);
+// Auto-refresh using the page's own type/map so it never loses its filter
+setInterval(() => loadSubmissions(PAGE_TYPE, PAGE_MAP), 30000);
