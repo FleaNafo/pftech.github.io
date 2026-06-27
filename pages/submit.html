@@ -22,7 +22,6 @@
     <a class="nav-link active" href="submit.html" data-page="submit">Submit</a>
   </div>
   <div class="pf-nav-actions">
-    <a class="btn-submit" href="submit.html"><i class="ti ti-upload"></i> Submit</a>
     <a class="btn-discord" href="https://discord.gg/G75a9aZKWp" target="_blank" rel="noopener"><i class="ti ti-brand-discord"></i> Discord</a>
   </div>
 </nav>
@@ -51,8 +50,46 @@
           </select>
         </div>
         <div class="form-group">
-          <label class="form-label" for="s-map">Map (optional)</label>
-          <input class="form-input" id="s-map" type="text" placeholder="e.g. Desert Storm" />
+          <label class="form-label" for="s-map">Map</label>
+          <select class="form-select" id="s-map">
+            <option value="No specific map">No specific map</option>
+            <option value="Bazaar">Bazaar</option>
+            <option value="Black Site">Black Site</option>
+            <option value="Capot">Capot</option>
+            <option value="Castle Keep">Castle Keep</option>
+            <option value="Containers">Containers</option>
+            <option value="Crane Site">Crane Site</option>
+            <option value="Derrick">Derrick</option>
+            <option value="Desert Storm">Desert Storm</option>
+            <option value="Dual Crane Site">Dual Crane Site</option>
+            <option value="Dunes">Dunes</option>
+            <option value="Dust Bowl">Dust Bowl</option>
+            <option value="Elevation">Elevation</option>
+            <option value="Facility">Facility</option>
+            <option value="Favela">Favela</option>
+            <option value="Fortress">Fortress</option>
+            <option value="Foxholes">Foxholes</option>
+            <option value="Heat">Heat</option>
+            <option value="Height">Height</option>
+            <option value="Highway Lot">Highway Lot</option>
+            <option value="Marooned">Marooned</option>
+            <option value="Metro Classic">Metro Classic</option>
+            <option value="Metro (2025)">Metro (2025)</option>
+            <option value="Mirage">Mirage</option>
+            <option value="Paradise">Paradise</option>
+            <option value="Penthouse">Penthouse</option>
+            <option value="Ravod 911">Ravod 911</option>
+            <option value="Rig">Rig</option>
+            <option value="Ruins">Ruins</option>
+            <option value="Rundown">Rundown</option>
+            <option value="Second Storm">Second Storm</option>
+            <option value="Stardom">Stardom</option>
+            <option value="Suburbia">Suburbia</option>
+            <option value="Transit">Transit</option>
+            <option value="Trench">Trench</option>
+            <option value="Villa">Villa</option>
+            <option value="Warehouse">Warehouse</option>
+          </select>
         </div>
       </div>
       <div class="form-group">
@@ -70,7 +107,7 @@
 
 <div class="section">
   <div class="section-inner" style="text-align: center;">
-    <h3 style="font-size: 18px; margin-bottom: 12px;">Submission Tips</h3>
+    <h3 style="font-size: 18px; margin-bottom: 20px;">Submission Tips</h3>
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
       <div>
         <div style="font-size: 20px; margin-bottom: 8px;"><i class="ti ti-bulb" style="color: var(--accent);"></i></div>
@@ -91,12 +128,8 @@
   </div>
 </div>
 
-<div class="footer">
-  © 2026 Phantom Forces Tech · Made by the community, for the community
-</div>
-
+<div class="footer">© 2026 Phantom Forces Tech · Made by the community, for the community</div>
 <div class="toast" id="toast"></div>
-
 <script src="../assets/shared.js"></script>
 <script>
   document.addEventListener('DOMContentLoaded', () => {
