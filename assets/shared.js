@@ -1,150 +1,186 @@
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+const API = 'https://script.google.com/macros/s/AKfycbyMKOcKID6Uc4_c9L_5oJdI472gJPc93lLNQQ9PlZsEcCpTvz7Tf6QgwHbV0IENFeL4/exec';
+const WEBHOOK = 'https://discord.com/api/webhooks/1519986780177305611/LcIjXkgLnvSYeFPzx1kLM6edgCPaeR-qjdeT5xkLRUSK1RAgJxDlCFHd8UXLjNIWVvbW';
 
-:root {
-  --bg: #ffffff;
-  --surface-0: #f5f5f4;
-  --surface-1: #f0f0ee;
-  --surface-2: #ffffff;
-  --text-primary: #1a1a18;
-  --text-secondary: #5f5e5a;
-  --text-muted: #8f8e89;
-  --border: rgba(0,0,0,0.10);
-  --border-strong: rgba(0,0,0,0.18);
-  --accent: #185fa5;
-  --accent-bg: #e6f1fb;
-  --accent-text: #0c447c;
-  --warning-bg: #faeeda;
-  --warning-text: #633806;
-  --success-bg: #eaf3de;
-  --success-text: #27500a;
-  --discord: #5865F2;
-  --radius: 8px;
+const TYPES = ['Tech', 'Glitch', 'Tutorial', 'Video showcase'];
+
+const EMPTY = {
+  'Tech': 'No techs approved yet — be the first to submit!',
+  'Glitch': 'No glitches documented yet.',
+  'Tutorial': 'No tutorials yet.',
+  'Video showcase': 'No video showcases yet.'
+};
+
+const TAG_CLASS = {
+  'Tech': 'tag-tech', 'Glitch': 'tag-glitch',
+  'Tutorial': 'tag-tutorial', 'Video showcase': 'tag-video'
+};
+
+const TAG_ICON = {
+  'Tech': 'ti-bolt', 'Glitch': 'ti-alert-triangle',
+  'Tutorial': 'ti-book', 'Video showcase': 'ti-player-play'
+};
+
+const EMBED_COLOR = {
+  'Tech': 0x185fa5, 'Glitch': 0xba7517,
+  'Tutorial': 0x3b6d11, 'Video showcase': 0x7c3aed
+};
+
+function esc(str) {
+  return String(str || '')
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #1a1a18;
-    --surface-0: #242422;
-    --surface-1: #2c2c2a;
-    --surface-2: #323230;
-    --text-primary: #f0f0ee;
-    --text-secondary: #b4b2a9;
-    --text-muted: #888780;
-    --border: rgba(255,255,255,0.10);
-    --border-strong: rgba(255,255,255,0.18);
-    --accent: #378add;
-    --accent-bg: #042c53;
-    --accent-text: #85b7eb;
-    --warning-bg: #412402;
-    --warning-text: #fac775;
-    --success-bg: #173404;
-    --success-text: #c0dd97;
-    --discord: #5865F2;
+function formatDate(iso) {
+  try {
+    return new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+  } catch { return ''; }
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  if (!t) return;
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3500);
+}
+
+function renderCard(s) {
+  const type = s.type || 'Tech';
+  return `
+    <div class="sub-card">
+      <div style="padding-top:2px">
+        <span class="card-tag ${TAG_CLASS[type] || 'tag-tech'}">
+          <i class="ti ${TAG_ICON[type] || 'ti-bolt'}" style="font-size:11px"></i> ${esc(type)}
+        </span>
+      </div>
+      <div class="sub-card-body">
+        <h4>${esc(s.title)}${s.map ? ` <span style="font-weight:400;color:var(--text-muted)">· ${esc(s.map)}</span>` : ''}</h4>
+        ${s.desc ? `<p>${esc(s.desc)}</p>` : ''}
+        ${s.video ? `<div class="sub-card-video"><a href="${esc(s.video)}" target="_blank" rel="noopener"><i class="ti ti-external-link" style="font-size:12px"></i> Watch video</a></div>` : ''}
+        <div class="sub-card-meta">By ${esc(s.name || 'Anonymous')}${s.date ? ' · ' + formatDate(s.date) : ''}</div>
+      </div>
+    </div>`;
+}
+
+async function loadSubmissions(typeFilter = null) {
+  try {
+    const res = await fetch(API);
+    const data = await res.json();
+    const subs = data.submissions || [];
+
+    const counts = { 'Tech': 0, 'Glitch': 0, 'Tutorial': 0, 'Video showcase': 0 };
+
+    // Update counters
+    TYPES.forEach(type => {
+      counts[type] = subs.filter(s => s.type === type).length;
+      updateCounter(type, counts[type]);
+    });
+
+    // Render specific type if on that page
+    if (typeFilter) {
+      const filtered = subs.filter(s => s.type === typeFilter).reverse();
+      const el = document.getElementById('submissions-list');
+      if (el) {
+        el.innerHTML = filtered.length
+          ? filtered.map(renderCard).join('')
+          : `<div class="empty-state">${EMPTY[typeFilter]}</div>`;
+      }
+    }
+
+  } catch (err) {
+    console.error('Failed to load submissions:', err);
+    const el = document.getElementById('submissions-list');
+    if (el) el.innerHTML = `<div class="empty-state">Couldn't load submissions. Try refreshing.</div>`;
   }
 }
 
-html { scroll-behavior: smooth; }
-body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  background: var(--bg); color: var(--text-primary); line-height: 1.6;
+function updateCounter(type, count) {
+  const counterEl = document.getElementById(`count-${type.toLowerCase().replace(' ', '-')}`);
+  if (counterEl) {
+    counterEl.textContent = count;
+  }
 }
-a { color: inherit; text-decoration: none; }
 
-/* NAV */
-.pf-nav {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 14px 24px; border-bottom: 0.5px solid var(--border);
-  background: var(--surface-2); position: sticky; top: 0; z-index: 100;
+async function handleSubmit() {
+  const name  = document.getElementById('s-name').value.trim();
+  const title = document.getElementById('s-title').value.trim();
+  const type  = document.getElementById('s-type').value;
+  const map   = document.getElementById('s-map').value.trim();
+  const desc  = document.getElementById('s-desc').value.trim();
+  const video = document.getElementById('s-video').value.trim();
+
+  if (!title) { showToast('Please add a title.'); return; }
+  if (!desc)  { showToast('Please add a description.'); return; }
+
+  const btn = document.getElementById('submit-btn');
+  btn.disabled = true;
+  btn.textContent = 'Submitting...';
+
+  try {
+    // Save to Google Sheet
+    await fetch(API, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, title, type, map, desc, video })
+    });
+
+    // Notify Discord
+    const fields = [
+      { name: 'Type', value: type, inline: true },
+      { name: 'Submitted by', value: name || 'Anonymous', inline: true },
+    ];
+    if (map)   fields.push({ name: 'Map', value: map, inline: true });
+    if (desc)  fields.push({ name: 'Description', value: desc });
+    if (video) fields.push({ name: 'Video', value: video });
+
+    await fetch(WEBHOOK, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        embeds: [{
+          title: `📥 New ${type}: ${title}`,
+          color: EMBED_COLOR[type] || 0x185fa5,
+          fields,
+          timestamp: new Date().toISOString(),
+          footer: { text: 'Phantom Forces Tech · Pending approval in Google Sheet' }
+        }]
+      })
+    });
+
+    showToast('Submitted! It\'ll go live once approved. ✓');
+    document.getElementById('s-name').value  = '';
+    document.getElementById('s-title').value = '';
+    document.getElementById('s-map').value   = '';
+    document.getElementById('s-desc').value  = '';
+    document.getElementById('s-video').value = '';
+
+    // Reload submissions after a short delay to show new data
+    setTimeout(() => loadSubmissions(), 1000);
+
+  } catch (e) {
+    console.error('Submit error:', e);
+    showToast('Something went wrong. Try again.');
+  }
+
+  btn.disabled = false;
+  btn.textContent = 'Submit for review';
 }
-.pf-logo { display: flex; align-items: center; gap: 10px; font-size: 16px; font-weight: 500; letter-spacing: -0.2px; cursor: pointer; }
-.pf-logo:hover { opacity: 0.8; }
-.pf-logo-icon { width: 28px; height: 28px; border-radius: 6px; background: var(--accent); display: flex; align-items: center; justify-content: center; }
-.pf-logo-icon i { color: #fff; font-size: 15px; }
-.pf-nav-links { display: flex; gap: 4px; }
-.nav-link { padding: 6px 12px; border-radius: var(--radius); font-size: 14px; color: var(--text-secondary); cursor: pointer; transition: background 0.15s, color 0.15s; }
-.nav-link:hover { background: var(--surface-1); color: var(--text-primary); }
-.nav-link.active { background: var(--accent-bg); color: var(--accent-text); }
-.pf-nav-actions { display: flex; gap: 8px; align-items: center; }
-.btn-submit { display: flex; align-items: center; gap: 6px; padding: 7px 14px; border-radius: var(--radius); background: var(--surface-1); border: 0.5px solid var(--border-strong); color: var(--text-secondary); font-size: 13px; font-weight: 500; cursor: pointer; transition: background 0.15s, color 0.15s; }
-.btn-submit:hover { background: var(--surface-0); color: var(--text-primary); }
-.btn-discord { display: flex; align-items: center; gap: 6px; padding: 7px 14px; border-radius: var(--radius); background: var(--discord); color: #fff; font-size: 13px; font-weight: 500; border: none; cursor: pointer; transition: background 0.15s; }
-.btn-discord:hover { background: #4752c4; }
 
-/* HERO */
-.hero-divider { border-bottom: 0.5px solid var(--border); }
-.hero { padding: 72px 24px 52px; text-align: center; max-width: 700px; margin: 0 auto; }
-.hero-badge { display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px; border-radius: 20px; background: var(--accent-bg); color: var(--accent-text); font-size: 12px; font-weight: 500; }
-.hero h1 { font-size: 38px; font-weight: 500; letter-spacing: -0.5px; margin-bottom: 14px; }
-.hero h1 span { color: var(--accent); }
-.hero p { font-size: 16px; color: var(--text-secondary); max-width: 460px; margin: 0 auto 32px; line-height: 1.65; }
-.hero-stats { display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; padding-top: 28px; border-top: 0.5px solid var(--border); }
-.stat { text-align: center; }
-.stat-num { font-size: 22px; font-weight: 500; }
-.stat-label { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
-
-/* SECTIONS */
-.section { padding: 44px 24px; border-bottom: 0.5px solid var(--border); max-width: 960px; margin: 0 auto; }
-.section-full { padding: 44px 24px; border-bottom: 0.5px solid var(--border); background: var(--surface-0); }
-.section-inner { max-width: 960px; margin: 0 auto; }
-.section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
-.section-title { display: flex; align-items: center; gap: 8px; font-size: 16px; font-weight: 500; }
-.section-title i { color: var(--accent); font-size: 18px; }
-
-/* SUBMISSION CARDS */
-.submissions-list { display: flex; flex-direction: column; gap: 10px; }
-.sub-card { background: var(--surface-2); border: 0.5px solid var(--border); border-radius: 10px; padding: 14px 16px; display: flex; align-items: flex-start; gap: 12px; }
-.sub-card-body { flex: 1; }
-.sub-card-body h4 { font-size: 14px; font-weight: 500; margin-bottom: 4px; }
-.sub-card-body p { font-size: 13px; color: var(--text-secondary); line-height: 1.5; }
-.sub-card-meta { font-size: 11px; color: var(--text-muted); margin-top: 6px; }
-.sub-card-video { font-size: 12px; color: var(--accent); margin-top: 4px; }
-.card-tag { display: inline-flex; align-items: center; gap: 4px; padding: 3px 8px; border-radius: 20px; font-size: 11px; font-weight: 500; margin-bottom: 0; }
-.tag-tech { background: var(--accent-bg); color: var(--accent-text); }
-.tag-glitch { background: var(--warning-bg); color: var(--warning-text); }
-.tag-tutorial { background: var(--success-bg); color: var(--success-text); }
-.tag-video { background: #f3e8ff; color: #5b21b6; }
-
-.empty-state { text-align: center; padding: 40px 20px; color: var(--text-muted); font-size: 14px; border: 0.5px dashed var(--border-strong); border-radius: 12px; }
-.loading-state { text-align: center; padding: 40px 20px; color: var(--text-muted); font-size: 14px; }
-
-/* SUBMIT FORM */
-.submit-card { background: var(--surface-2); border: 0.5px solid var(--border); border-radius: 12px; padding: 28px; max-width: 560px; margin: 0 auto; }
-.submit-card h2 { font-size: 18px; font-weight: 500; margin-bottom: 6px; }
-.submit-card > p { font-size: 14px; color: var(--text-secondary); margin-bottom: 22px; }
-.form-group { margin-bottom: 14px; }
-.form-label { font-size: 13px; color: var(--text-secondary); margin-bottom: 5px; display: block; }
-.form-input, .form-select, .form-textarea {
-  width: 100%; padding: 9px 12px; border-radius: var(--radius);
-  border: 0.5px solid var(--border-strong); background: var(--surface-1);
-  color: var(--text-primary); font-size: 14px;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  outline: none; transition: border-color 0.15s, box-shadow 0.15s;
+// Set active nav link
+function setActiveNav(pageName) {
+  document.querySelectorAll('.nav-link').forEach(link => {
+    link.classList.remove('active');
+  });
+  const activeLink = document.querySelector(`[data-page="${pageName}"]`);
+  if (activeLink) activeLink.classList.add('active');
 }
-.form-textarea { min-height: 90px; resize: vertical; }
-.form-input:focus, .form-select:focus, .form-textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-bg); }
-.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-.btn-primary { width: 100%; padding: 10px; border-radius: var(--radius); background: var(--accent); color: #fff; font-size: 14px; font-weight: 500; border: none; cursor: pointer; margin-top: 12px; transition: opacity 0.15s; }
-.btn-primary:hover { opacity: 0.88; }
-.btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
 
-/* DISCORD */
-.discord-banner { background: var(--surface-2); border: 0.5px solid var(--border); border-radius: 12px; padding: 28px 32px; display: flex; align-items: center; justify-content: space-between; }
-.discord-text h2 { font-size: 18px; font-weight: 500; margin-bottom: 4px; }
-.discord-text p { font-size: 14px; color: var(--text-secondary); }
-.btn-discord-big { display: flex; align-items: center; gap: 8px; padding: 10px 22px; border-radius: var(--radius); background: var(--discord); color: #fff; font-size: 14px; font-weight: 500; border: none; cursor: pointer; transition: background 0.15s; }
-.btn-discord-big:hover { background: #4752c4; }
+// Load submissions on page load
+window.addEventListener('DOMContentLoaded', () => {
+  loadSubmissions();
+});
 
-/* FOOTER */
-.footer { padding: 22px 24px; text-align: center; font-size: 13px; color: var(--text-muted); border-top: 0.5px solid var(--border); }
-
-/* TOAST */
-.toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px); background: var(--text-primary); color: var(--bg); padding: 10px 20px; border-radius: var(--radius); opacity: 0; transition: transform 0.3s, opacity 0.3s; z-index: 1000; }
-.toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
-
-@media (max-width: 640px) {
-  .pf-nav-links { display: none; }
-  .hero h1 { font-size: 28px; }
-  .form-row { grid-template-columns: 1fr; }
-  .hero-stats { gap: 24px; }
-  .discord-banner { flex-direction: column; text-align: center; }
-}
+// Refresh counters every 30 seconds
+setInterval(() => loadSubmissions(), 30000);
